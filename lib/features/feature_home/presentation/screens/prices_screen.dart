@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:price_online/common/bloc/change_index/change_index_cubit.dart';
-import 'package:price_online/features/feature_prices/presentation/widgets/lebel_button.dart';
+import 'package:price_online/features/feature_home/presentation/bloc/gold_cubit/gold_cubit.dart';
+import 'package:price_online/features/feature_home/presentation/widgets/lebel_button.dart';
+import 'package:price_online/features/feature_home/repository/gold_repository.dart';
+import 'package:price_online/locator.dart';
 import 'package:price_online/main.dart';
 
 class PricesScreen extends StatelessWidget {
@@ -96,6 +99,15 @@ class PricesScreen extends StatelessWidget {
                   ),
                 );
               },
+            ),
+            // prices list
+            MultiBlocProvider(
+              providers: [
+                BlocProvider(create: (context) => GoldCubit(locator<GoldRepository>())),
+              ],
+              child: const Column(
+                children: [],
+              ),
             ),
           ],
         ),
