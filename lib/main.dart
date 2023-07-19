@@ -4,7 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:price_online/common/bloc/change_index/change_index_cubit.dart';
 import 'package:price_online/config/my_theme.dart';
-import 'package:price_online/features/feature_home/presentation/screens/prices_screen.dart';
+import 'package:price_online/features/feature_home/presentation/bloc/coin_cubit/prices_cubit.dart';
+import 'package:price_online/features/feature_home/presentation/screens/home_screen.dart';
+import 'package:price_online/features/feature_home/repository/prices_repository.dart';
 import 'package:price_online/locator.dart';
 
 void main() async {
@@ -17,6 +19,7 @@ void main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => ChangeIndexCubit()),
+        BlocProvider(create: (_) => PricesCubit(locator<PricesRepository>())),
       ],
       child: const MyApp(),
     ),
@@ -43,7 +46,7 @@ class MyApp extends StatelessWidget {
         Locale('en'), // English
         Locale('fa'), // persian(farsi)
       ],
-      home: const PricesScreen(),
+      home: const HomeScreen(),
     );
   }
 

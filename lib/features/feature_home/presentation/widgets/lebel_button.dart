@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:price_online/common/bloc/change_index/change_index_cubit.dart';
+import 'package:price_online/features/feature_home/presentation/bloc/coin_cubit/prices_cubit.dart';
+import 'package:price_online/features/feature_home/presentation/screens/home_screen.dart';
 
 class LebelButton extends StatelessWidget {
   const LebelButton({
@@ -26,6 +28,21 @@ class LebelButton extends StatelessWidget {
         onTap: () {
           // call index
           BlocProvider.of<ChangeIndexCubit>(context).changeIndexEvent(index);
+
+          // call prices data
+          /// Gold
+          if (index == 0) {
+            print(index);
+            HomeScreen.labelTitle = title;
+            BlocProvider.of<PricesCubit>(context).callGoldDataEvent();
+          }
+
+          /// Coin
+          if (index == 1) {
+            print(index);
+            HomeScreen.labelTitle = title;
+            BlocProvider.of<PricesCubit>(context).callCoinDataEvent();
+          }
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 12.0),
