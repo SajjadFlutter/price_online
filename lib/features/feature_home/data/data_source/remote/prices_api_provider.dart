@@ -18,4 +18,17 @@ class PricesApiProvider {
 
     return response;
   }
+
+  dynamic callCurrencyData() async {
+    Response response =
+        await Dio().get('https://bazaretala.com/dollar-and-currency-price');
+
+    return response;
+  }
+
+  dynamic callCryptoData() async {
+    Response response = await Dio().get('https://www.coingecko.com/');
+
+    return response;
+  }
 }

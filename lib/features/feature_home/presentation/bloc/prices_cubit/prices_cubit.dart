@@ -13,6 +13,7 @@ class PricesCubit extends Cubit<PricesState> {
   PricesCubit(this.coinRepository)
       : super(PricesState(pricesDataStatus: PricesDataLoading()));
 
+  // Gold
   Future<void> callGoldDataEvent() async {
     // emit loading
     emit(state.copyWith(newPricesDataStatus: PricesDataLoading()));
@@ -32,6 +33,7 @@ class PricesCubit extends Cubit<PricesState> {
     }
   }
 
+  // Coin
   Future<void> callCoinDataEvent() async {
     // emit loading
     emit(state.copyWith(newPricesDataStatus: PricesDataLoading()));
@@ -51,41 +53,43 @@ class PricesCubit extends Cubit<PricesState> {
     }
   }
 
-  // Future<void> callCurrencyDataEvent() async {
-  //   // emit loading
-  //   emit(state.copyWith(newPricesDataStatus: PricesDataLoading()));
+  // Currency
+  Future<void> callCurrencyDataEvent() async {
+    // emit loading
+    emit(state.copyWith(newPricesDataStatus: PricesDataLoading()));
 
-  //   final DataState dataState = await coinRepository.fetchCurrencyData();
+    final DataState dataState = await coinRepository.fetchCurrencyData();
 
-  //   if (dataState is DataSuccess) {
-  //     // emit completed
-  //     emit(state.copyWith(
-  //         newPricesDataStatus: PricesDataCompleted(dataState.data)));
-  //   }
+    if (dataState is DataSuccess) {
+      // emit completed
+      emit(state.copyWith(
+          newPricesDataStatus: PricesDataCompleted(dataState.data)));
+    }
 
-  //   if (dataState is DataFailed) {
-  //     // emit error
-  //     emit(state.copyWith(
-  //         newPricesDataStatus: PricesDataError(dataState.error!)));
-  //   }
-  // }
+    if (dataState is DataFailed) {
+      // emit error
+      emit(state.copyWith(
+          newPricesDataStatus: PricesDataError(dataState.error!)));
+    }
+  }
 
-  // Future<void> callCryptoDataEvent() async {
-  //   // emit loading
-  //   emit(state.copyWith(newPricesDataStatus: PricesDataLoading()));
+  // Crypto
+  Future<void> callCryptoDataEvent() async {
+    // emit loading
+    emit(state.copyWith(newPricesDataStatus: PricesDataLoading()));
 
-  //   final DataState dataState = await coinRepository.fetchCryptoData();
+    final DataState dataState = await coinRepository.fetchCryptoData();
 
-  //   if (dataState is DataSuccess) {
-  //     // emit completed
-  //     emit(state.copyWith(
-  //         newPricesDataStatus: PricesDataCompleted(dataState.data)));
-  //   }
+    if (dataState is DataSuccess) {
+      // emit completed
+      emit(state.copyWith(
+          newPricesDataStatus: PricesDataCompleted(dataState.data)));
+    }
 
-  //   if (dataState is DataFailed) {
-  //     // emit error
-  //     emit(state.copyWith(
-  //         newPricesDataStatus: PricesDataError(dataState.error!)));
-  //   }
-  // }
+    if (dataState is DataFailed) {
+      // emit error
+      emit(state.copyWith(
+          newPricesDataStatus: PricesDataError(dataState.error!)));
+    }
+  }
 }

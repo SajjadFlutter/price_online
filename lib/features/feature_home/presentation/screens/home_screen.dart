@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:price_online/common/bloc/change_index/change_index_cubit.dart';
-import 'package:price_online/features/feature_home/presentation/bloc/coin_cubit/prices_cubit.dart';
+import 'package:price_online/features/feature_home/presentation/bloc/prices_cubit/prices_cubit.dart';
 import 'package:price_online/features/feature_home/presentation/widgets/lebel_button.dart';
 import 'package:price_online/main.dart';
 
@@ -130,7 +130,7 @@ class HomeScreen extends StatelessWidget {
                         if (HomeScreen.labelTitle == labelCategories[0]) {
                           return  Text(models[0].title);
                         }
-                        return Text(models[0].title);
+                        return Text(models[0].percent,style: const TextStyle(fontSize: 25.0),);
                       }
                       // Error
                       if (state.pricesDataStatus is PricesDataError) {
