@@ -20,6 +20,11 @@ class PricesRepository {
         var document = parse(response.data);
 
         List<GoldModel> goldResults = [];
+        List<String> goldImages = [
+          'https://fs.noorgram.ir/xen/2021/05/1937_a04f325674750b15e1a00d49222b587f_thumb.jpg',
+          'https://fs.noorgram.ir/xen/2021/05/1937_a04f325674750b15e1a00d49222b587f_thumb.jpg',
+          'https://fs.noorgram.ir/xen/2021/05/1937_a04f325674750b15e1a00d49222b587f_thumb.jpg',
+        ];
         List<String> goldTitles = [];
         List<String> goldPrices = [];
         List<String> goldPercent = [];
@@ -30,7 +35,22 @@ class PricesRepository {
         var percentElements = document.querySelectorAll('#gold .d span');
 
         for (var i = 0; i < goldElements.length; i++) {
-          if (i == 0 || i == 5 || i == 10) {
+          if (i == 0 || i == 5 || i == 7) {
+            String imageUrl = '';
+
+            switch (i) {
+              case 0:
+                imageUrl = goldImages[0];
+                break;
+              case 5:
+                imageUrl = goldImages[1];
+                break;
+              case 7:
+                imageUrl = goldImages[2];
+                break;
+              default:
+            }
+
             String title = titleElements[i].text.trim();
             goldTitles.add(title);
 
@@ -42,7 +62,12 @@ class PricesRepository {
             goldPercent.add(percent);
 
             goldResults.add(
-              GoldModel(title: title, price: price, percent: percent),
+              GoldModel(
+                imageUrl: imageUrl,
+                title: title,
+                price: price,
+                percent: percent,
+              ),
             );
           }
         }
@@ -64,6 +89,13 @@ class PricesRepository {
         var document = parse(response.data);
 
         List<CoinModel> coinResults = [];
+        List<String> coinImages = [
+          'https://storage.torob.com/backend-api/base/images/uI/ru/uIru5jH_Z3Wkdh_k.png_/216x216.jpg',
+          'https://storage.torob.com/backend-api/base/images/uI/ru/uIru5jH_Z3Wkdh_k.png_/216x216.jpg',
+          'https://storage.torob.com/backend-api/base/images/f2/uJ/f2uJwWbvGo9Ooxi1.png_/216x216.jpg',
+          'https://storage.torob.com/backend-api/base/images/f2/uJ/f2uJwWbvGo9Ooxi1.png_/216x216.jpg',
+          'https://storage.torob.com/backend-api/base/images/f2/uJ/f2uJwWbvGo9Ooxi1.png_/216x216.jpg',
+        ];
         List<String> coinTitles = [];
         List<String> coinPrices = [];
         List<String> coinPercent = [];
@@ -75,6 +107,8 @@ class PricesRepository {
 
         for (var i = 0; i < coinElements.length; i++) {
           if (i < 5) {
+            String imageUrl = coinImages[i];
+
             String title = titleElements[i].text.trim();
             coinTitles.add(title);
 
@@ -86,7 +120,12 @@ class PricesRepository {
             coinPercent.add(percent);
 
             coinResults.add(
-              CoinModel(title: title, price: price, percent: percent),
+              CoinModel(
+                imageUrl: imageUrl,
+                title: title,
+                price: price,
+                percent: percent,
+              ),
             );
           }
         }
@@ -108,16 +147,24 @@ class PricesRepository {
         var document = parse(response.data);
 
         List<CurrencyModel> currencyResults = [];
+        List<String> currencyImages = [];
         List<String> currencyTitles = [];
         List<String> currencyPrices = [];
         List<String> currencyPercent = [];
 
         var currencyElements = document.querySelectorAll('#azad .tr-price');
+        var imagesElements =
+            document.querySelectorAll('#azad .ptitle .mini-flag');
         var titleElements = document.querySelectorAll('#azad .ptitle h2');
         var priceElements = document.querySelectorAll('#azad .p');
         var percentElements = document.querySelectorAll('#azad .d span');
 
         for (var i = 0; i < currencyElements.length; i++) {
+          String countryCode = imagesElements[i].className.substring(15);
+          String imageUrl =
+              'https://bazaretala.com/uploads/flags/$countryCode.svg';
+          currencyImages.add(imageUrl);
+
           String title = titleElements[i].text.trim();
           currencyTitles.add(title);
 
@@ -129,7 +176,12 @@ class PricesRepository {
           currencyPercent.add(percent);
 
           currencyResults.add(
-            CurrencyModel(title: title, price: price, percent: percent),
+            CurrencyModel(
+              imageUrl: imageUrl,
+              title: title,
+              price: price,
+              percent: percent,
+            ),
           );
         }
 
@@ -150,16 +202,28 @@ class PricesRepository {
         var document = parse(response.data);
 
         List<CryptoModel> cryptoResults = [];
+        List<String> cryptoImages = [];
         List<String> cryptoTitles = [];
         List<String> cryptoPrices = [];
         List<String> cryptoPercent = [];
 
-        var cryptoElements = document.querySelectorAll('.coingecko-table tbody tr');
-        var titleElements = document.querySelectorAll('.coingecko-table .coin-name .font-bold');
-        var priceElements = document.querySelectorAll('.coingecko-table [data-target="price.price"]');
-        var percentElements = document.querySelectorAll('.coingecko-table .td-change24h [data-target="percent-change.percent"]');
+        var cryptoElements =
+            document.querySelectorAll('.coingecko-table tbody tr');
+        var imagesElements =
+            document.querySelectorAll('.coingecko-table tbody tr td div img');
+        var titleElements =
+            document.querySelectorAll('.coingecko-table .coin-name .font-bold');
+        var priceElements = document.querySelectorAll(
+            '.coingecko-table .td-price [data-target="price.price"]');
+        var percentElements = document.querySelectorAll(
+            '.coingecko-table .td-change24h [data-target="percent-change.percent"]');
 
         for (var i = 0; i < cryptoElements.length; i++) {
+          String imageUrl = imagesElements[i].attributes['src'].toString();
+          if(!imageUrl.contains('.svg')){
+            cryptoImages.add(imageUrl);
+          }
+
           String title = titleElements[i].text.trim();
           cryptoTitles.add(title);
 
@@ -170,9 +234,17 @@ class PricesRepository {
           cryptoPercent.add(percent);
 
           cryptoResults.add(
-            CryptoModel(title: title, price: price, percent: percent),
+            CryptoModel(
+              imageUrl: imageUrl,
+              title: title,
+              price: price,
+              percent: percent,
+            ),
           );
         }
+
+        print(imagesElements[1].attributes['src']);
+        print(imagesElements.length);
 
         return DataSuccess(cryptoResults);
       } else {

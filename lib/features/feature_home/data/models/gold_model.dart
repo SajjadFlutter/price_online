@@ -1,11 +1,11 @@
 class GoldModel {
-  String? imgUrl;
+  String? imageUrl;
   String? title;
   String? price;
   String? percent;
 
   GoldModel({
-    this.imgUrl,
+    this.imageUrl,
     this.title,
     this.price,
     this.percent,

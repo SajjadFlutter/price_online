@@ -1,11 +1,11 @@
 class CurrencyModel {
-  String? imgUrl;
+  String? imageUrl;
   String? title;
   String? price;
   String? percent;
 
   CurrencyModel({
-    this.imgUrl,
+    this.imageUrl,
     this.title,
     this.price,
     this.percent,

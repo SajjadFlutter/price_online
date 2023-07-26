@@ -1,11 +1,11 @@
 class CoinModel {
-  String? imgUrl;
+  String? imageUrl;
   String? title;
   String? price;
   String? percent;
 
   CoinModel({
-    this.imgUrl,
+    this.imageUrl,
     this.title,
     this.price,
     this.percent,
