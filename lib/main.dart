@@ -46,6 +46,7 @@ class MyApp extends StatelessWidget {
         Locale('en'), // English
         Locale('fa'), // persian(farsi)
       ],
+      title: 'قیمت آنلاین',
       home: const HomeScreen(),
     );
   }

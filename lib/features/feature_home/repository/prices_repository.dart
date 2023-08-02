@@ -22,51 +22,45 @@ class PricesRepository {
         List<GoldModel> goldResults = [];
         List<String> goldImages = [
           'https://fs.noorgram.ir/xen/2021/05/1937_a04f325674750b15e1a00d49222b587f_thumb.jpg',
-          'https://fs.noorgram.ir/xen/2021/05/1937_a04f325674750b15e1a00d49222b587f_thumb.jpg',
-          'https://fs.noorgram.ir/xen/2021/05/1937_a04f325674750b15e1a00d49222b587f_thumb.jpg',
         ];
-        List<String> goldTitles = [];
-        List<String> goldPrices = [];
-        List<String> goldPercent = [];
 
         var goldElements = document.querySelectorAll('#gold .tr-price');
         var titleElements = document.querySelectorAll('#gold .ptitle h2');
+        var timeUpdateElements =
+            document.querySelectorAll('#gold .tr-price .t');
         var priceElements = document.querySelectorAll('#gold .p');
         var percentElements = document.querySelectorAll('#gold .d span');
+        var percentChangeElements =
+            document.querySelectorAll('#gold .tr-price .d');
 
         for (var i = 0; i < goldElements.length; i++) {
           if (i == 0 || i == 5 || i == 7) {
-            String imageUrl = '';
-
-            switch (i) {
-              case 0:
-                imageUrl = goldImages[0];
-                break;
-              case 5:
-                imageUrl = goldImages[1];
-                break;
-              case 7:
-                imageUrl = goldImages[2];
-                break;
-              default:
-            }
+            String imageUrl = goldImages[0];
 
             String title = titleElements[i].text.trim();
-            goldTitles.add(title);
+
+            String timeUpdate = timeUpdateElements[i].text.trim();
 
             String price = priceElements[i].text.trim();
-            goldPrices.add(price);
 
             String percent = percentElements[i].text.trim();
             percent = percent.substring(1, percent.length - 1);
-            goldPercent.add(percent);
+
+            String percentChange =
+                percentChangeElements[i].className.contains('high')
+                    ? 'high'
+                    : percentChangeElements[i].className.contains('low')
+                        ? 'low'
+                        : 'unChanged';
 
             goldResults.add(
               GoldModel(
                 imageUrl: imageUrl,
                 title: title,
+                timeUpdate: timeUpdate,
                 price: price,
                 percent: percent,
+                percentChange: percentChange,
               ),
             );
           }
@@ -96,35 +90,41 @@ class PricesRepository {
           'https://storage.torob.com/backend-api/base/images/f2/uJ/f2uJwWbvGo9Ooxi1.png_/216x216.jpg',
           'https://storage.torob.com/backend-api/base/images/f2/uJ/f2uJwWbvGo9Ooxi1.png_/216x216.jpg',
         ];
-        List<String> coinTitles = [];
-        List<String> coinPrices = [];
-        List<String> coinPercent = [];
 
         var coinElements = document.querySelectorAll('#coin .tr-price');
         var titleElements = document.querySelectorAll('#coin .ptitle h2');
+        var timeUpdateElements =
+            document.querySelectorAll('#coin .tr-price .t');
         var priceElements = document.querySelectorAll('#coin .p');
         var percentElements = document.querySelectorAll('#coin .d span');
+        var percentChangeElements =
+            document.querySelectorAll('#coin .tr-price .d');
 
         for (var i = 0; i < coinElements.length; i++) {
           if (i < 5) {
             String imageUrl = coinImages[i];
-
             String title = titleElements[i].text.trim();
-            coinTitles.add(title);
-
+            String timeUpdate = timeUpdateElements[i].text.trim();
             String price = priceElements[i].text.trim();
-            coinPrices.add(price);
 
             String percent = percentElements[i].text.trim();
             percent = percent.substring(1, percent.length - 1);
-            coinPercent.add(percent);
+
+            String percentChange =
+                percentChangeElements[i].className.contains('high')
+                    ? 'high'
+                    : percentChangeElements[i].className.contains('low')
+                        ? 'low'
+                        : 'unChanged';
 
             coinResults.add(
               CoinModel(
                 imageUrl: imageUrl,
                 title: title,
+                timeUpdate: timeUpdate,
                 price: price,
                 percent: percent,
+                percentChange: percentChange,
               ),
             );
           }
@@ -147,40 +147,44 @@ class PricesRepository {
         var document = parse(response.data);
 
         List<CurrencyModel> currencyResults = [];
-        List<String> currencyImages = [];
-        List<String> currencyTitles = [];
-        List<String> currencyPrices = [];
-        List<String> currencyPercent = [];
 
         var currencyElements = document.querySelectorAll('#azad .tr-price');
         var imagesElements =
             document.querySelectorAll('#azad .ptitle .mini-flag');
         var titleElements = document.querySelectorAll('#azad .ptitle h2');
+        var timeUpdateElements =
+            document.querySelectorAll('#azad .tr-price .t');
         var priceElements = document.querySelectorAll('#azad .p');
         var percentElements = document.querySelectorAll('#azad .d span');
+        var percentChangeElements =
+            document.querySelectorAll('#azad .tr-price .d');
 
         for (var i = 0; i < currencyElements.length; i++) {
           String countryCode = imagesElements[i].className.substring(15);
           String imageUrl =
               'https://bazaretala.com/uploads/flags/$countryCode.svg';
-          currencyImages.add(imageUrl);
-
           String title = titleElements[i].text.trim();
-          currencyTitles.add(title);
-
+          String timeUpdate = timeUpdateElements[i].text.trim();
           String price = priceElements[i].text.trim();
-          currencyPrices.add(price);
 
           String percent = percentElements[i].text.trim();
           percent = percent.substring(1, percent.length - 1);
-          currencyPercent.add(percent);
+
+          String percentChange =
+              percentChangeElements[i].className.contains('high')
+                  ? 'high'
+                  : percentChangeElements[i].className.contains('low')
+                      ? 'low'
+                      : 'unChanged';
 
           currencyResults.add(
             CurrencyModel(
               imageUrl: imageUrl,
               title: title,
+              timeUpdate: timeUpdate,
               price: price,
               percent: percent,
+              percentChange: percentChange,
             ),
           );
         }
@@ -202,10 +206,6 @@ class PricesRepository {
         var document = parse(response.data);
 
         List<CryptoModel> cryptoResults = [];
-        List<String> cryptoImages = [];
-        List<String> cryptoTitles = [];
-        List<String> cryptoPrices = [];
-        List<String> cryptoPercent = [];
 
         var cryptoElements =
             document.querySelectorAll('.coingecko-table tbody tr');
@@ -220,31 +220,33 @@ class PricesRepository {
 
         for (var i = 0; i < cryptoElements.length; i++) {
           String imageUrl = imagesElements[i].attributes['src'].toString();
-          if(!imageUrl.contains('.svg')){
-            cryptoImages.add(imageUrl);
-          }
 
           String title = titleElements[i].text.trim();
-          cryptoTitles.add(title);
-
           String price = priceElements[i].text.trim();
-          cryptoPrices.add(price);
 
           String percent = percentElements[i].text.trim();
-          cryptoPercent.add(percent);
+
+          // print(percentElements[i].text);
+
+          String percentChange = percentElements[i].text.trim().contains('-')
+              ? 'low'
+              : percentElements[i].text.trim().contains('-') == false &&
+                      double.parse(percentElements[i].text.substring(0, 3)) > 0
+                  ? 'high'
+                  : 'unChanged';
 
           cryptoResults.add(
             CryptoModel(
               imageUrl: imageUrl,
               title: title,
+              timeUpdate:
+                  '${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}',
               price: price,
               percent: percent,
+              percentChange: percentChange,
             ),
           );
         }
-
-        print(imagesElements[1].attributes['src']);
-        print(imagesElements.length);
 
         return DataSuccess(cryptoResults);
       } else {

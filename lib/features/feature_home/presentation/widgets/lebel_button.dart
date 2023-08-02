@@ -55,7 +55,7 @@ class LebelButton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 12.0),
           decoration: BoxDecoration(
             color: state == index ? primaryColor : Colors.grey.shade200,
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(12.0),
           ),
           child: Text(title, style: textTheme.labelLarge),
         ),
