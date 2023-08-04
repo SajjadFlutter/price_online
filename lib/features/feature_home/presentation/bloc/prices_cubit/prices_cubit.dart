@@ -9,16 +9,16 @@ part 'prices_state.dart';
 part 'prices_data_status.dart';
 
 class PricesCubit extends Cubit<PricesState> {
-  final PricesRepository coinRepository;
-  PricesCubit(this.coinRepository)
+  final PricesRepository pricesRepository;
+  PricesCubit(this.pricesRepository)
       : super(PricesState(pricesDataStatus: PricesDataLoading()));
 
-  // Gold
+  // Gold Data
   Future<void> callGoldDataEvent() async {
     // emit loading
     emit(state.copyWith(newPricesDataStatus: PricesDataLoading()));
 
-    final DataState dataState = await coinRepository.fetchGoldData();
+    final DataState dataState = await pricesRepository.fetchGoldData();
 
     if (dataState is DataSuccess) {
       // emit completed
@@ -33,12 +33,12 @@ class PricesCubit extends Cubit<PricesState> {
     }
   }
 
-  // Coin
+  // Coin Data
   Future<void> callCoinDataEvent() async {
     // emit loading
     emit(state.copyWith(newPricesDataStatus: PricesDataLoading()));
 
-    final DataState dataState = await coinRepository.fetchCoinData();
+    final DataState dataState = await pricesRepository.fetchCoinData();
 
     if (dataState is DataSuccess) {
       // emit completed
@@ -53,12 +53,12 @@ class PricesCubit extends Cubit<PricesState> {
     }
   }
 
-  // Currency
+  // Currency Data
   Future<void> callCurrencyDataEvent() async {
     // emit loading
     emit(state.copyWith(newPricesDataStatus: PricesDataLoading()));
 
-    final DataState dataState = await coinRepository.fetchCurrencyData();
+    final DataState dataState = await pricesRepository.fetchCurrencyData();
 
     if (dataState is DataSuccess) {
       // emit completed
@@ -73,12 +73,12 @@ class PricesCubit extends Cubit<PricesState> {
     }
   }
 
-  // Crypto
+  // Crypto Data
   Future<void> callCryptoDataEvent() async {
     // emit loading
     emit(state.copyWith(newPricesDataStatus: PricesDataLoading()));
 
-    final DataState dataState = await coinRepository.fetchCryptoData();
+    final DataState dataState = await pricesRepository.fetchCryptoData();
 
     if (dataState is DataSuccess) {
       // emit completed
@@ -92,4 +92,22 @@ class PricesCubit extends Cubit<PricesState> {
           newPricesDataStatus: PricesDataError(dataState.error!)));
     }
   }
+
+  // Refresh Gold Data
+  Future<void> refreshCryptoDataEvent() async {
+    final DataState dataState = await pricesRepository.fetchCryptoData();
+
+    if (dataState is DataSuccess) {
+      // emit completed
+      emit(state.copyWith(
+          newPricesDataStatus: PricesDataCompleted(dataState.data)));
+    }
+
+    if (dataState is DataFailed) {
+      // emit error
+      emit(state.copyWith(
+          newPricesDataStatus: PricesDataError(dataState.error!)));
+    }
+  }
+
 }

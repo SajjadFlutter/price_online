@@ -1,11 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:price_online/common/bloc/change_index/change_index_cubit.dart';
 import 'package:price_online/common/helper/decimal_rounder.dart';
 import 'package:price_online/features/feature_home/presentation/bloc/prices_cubit/prices_cubit.dart';
 import 'package:price_online/features/feature_home/presentation/widgets/lebel_button.dart';
+import 'package:price_online/features/feature_home/presentation/widgets/price_item.dart';
 import 'package:price_online/features/feature_home/presentation/widgets/shimmer_item.dart';
 import 'package:price_online/main.dart';
 import 'package:shimmer/shimmer.dart';
@@ -19,7 +18,6 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // change statusbar color
     MyApp.changeColor(Colors.transparent, Brightness.dark);
-
     // theme
     var textTheme = Theme.of(context).textTheme;
     var primaryColor = Theme.of(context).primaryColor;
@@ -57,364 +55,135 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-      // body
       body: SafeArea(
-        child: Stack(
-          children: [
-            // Prices List
-            SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Column(
-                children: [
-                  const SizedBox(height: 55.0),
-                  Builder(builder: (context) {
-                    // call api
-                    BlocProvider.of<PricesCubit>(context).callGoldDataEvent();
-                    return Column(
+        child: Builder(builder: (context) {
+          // call gold api
+          BlocProvider.of<PricesCubit>(context).callGoldDataEvent();
+          return Column(
+            children: [
+              // appbar
+              Container(
+                color: Theme.of(context).scaffoldBackgroundColor,
+                padding: const EdgeInsets.only(top: 5.0),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // Lelel categories
-                        BlocBuilder<ChangeIndexCubit, int>(
-                          builder: (context, state) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: Row(
-                                children: List.generate(
-                                  labelCategories.length,
-                                  (index) => LebelButton(
-                                    primaryColor: primaryColor,
-                                    textTheme: textTheme,
-                                    state: state,
-                                    index: index,
-                                    title: labelCategories[index],
-                                  ),
-                                ),
-                              ),
+                        Builder(
+                          builder: (context) => IconButton(
+                            icon: Icon(
+                              Icons.menu_rounded,
+                              color: Colors.grey.shade800,
+                              size: 24.0,
+                            ),
+                            onPressed: () => Scaffold.of(context).openDrawer(),
+                            tooltip: MaterialLocalizations.of(context)
+                                .openAppDrawerTooltip,
+                          ),
+                        ),
+                        // title appbar
+                        Text('قیمت آنلاین', style: textTheme.titleLarge),
+                        const SizedBox(
+                          width: 65.0,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              // Lelel categories
+              BlocBuilder<ChangeIndexCubit, int>(
+                builder: (context, state) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    child: Row(
+                      children: List.generate(
+                        labelCategories.length,
+                        (index) => LebelButton(
+                          primaryColor: primaryColor,
+                          textTheme: textTheme,
+                          state: state,
+                          index: index,
+                          title: labelCategories[index],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              //
+              const SizedBox(height: 10.0),
+              // Prices list
+              BlocBuilder<PricesCubit, PricesState>(
+                buildWhen: (previous, current) {
+                  if (previous.pricesDataStatus == current.pricesDataStatus) {
+                    return false;
+                  }
+                  return true;
+                },
+                builder: (context, state) {
+                  // Loading
+                  if (state.pricesDataStatus is PricesDataLoading) {
+                    return Expanded(
+                      child: ListView.builder(
+                        itemCount: HomeScreen.labelTitle == 'طلا'
+                            ? 3
+                            : HomeScreen.labelTitle == 'سکه'
+                                ? 5
+                                : 10,
+                        itemBuilder: (context, index) => Shimmer.fromColors(
+                          baseColor: Colors.grey.shade400,
+                          highlightColor: Colors.grey.shade200,
+                          child: const ShimmerItem(),
+                        ),
+                      ),
+                    );
+                  }
+                  // Completed
+                  if (state.pricesDataStatus is PricesDataCompleted) {
+                    PricesDataCompleted pricesDataCompleted =
+                        state.pricesDataStatus as PricesDataCompleted;
+                    // models
+                    List priceModels = pricesDataCompleted.modelResults;
+
+                    return Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: priceModels.length,
+                          itemBuilder: (context, index) {
+                            // percentIcon
+                            var percentIcon =
+                                DecimalRounder.setPercentChangesIcon(
+                                    priceModels[index].percentChange);
+
+                            return PriceItem(
+                              index: index,
+                              priceModels: priceModels,
+                              cardColor: cardColor,
+                              labelTitle: labelTitle,
+                              primaryColor: primaryColor,
+                              textTheme: textTheme,
+                              percentIcon: percentIcon,
                             );
                           },
                         ),
-                        // prices list
-                        BlocBuilder<PricesCubit, PricesState>(
-                          buildWhen: (previous, current) {
-                            if (previous.pricesDataStatus ==
-                                current.pricesDataStatus) {
-                              return false;
-                            }
-                            return true;
-                          },
-                          builder: (context, state) {
-                            // Loading
-                            if (state.pricesDataStatus is PricesDataLoading) {
-                              return Column(
-                                children: List.generate(
-                                  HomeScreen.labelTitle == 'طلا'
-                                      ? 3
-                                      : HomeScreen.labelTitle == 'سکه'
-                                          ? 5
-                                          : 10,
-                                  (index) => Shimmer.fromColors(
-                                    baseColor: Colors.grey.shade400,
-                                    highlightColor: Colors.grey.shade200,
-                                    child: const ShimmerItem(),
-                                  ),
-                                ),
-                              );
-                            }
-                            // Completed
-                            if (state.pricesDataStatus is PricesDataCompleted) {
-                              PricesDataCompleted pricesDataCompleted =
-                                  state.pricesDataStatus as PricesDataCompleted;
-                              // models
-                              List priceModels =
-                                  pricesDataCompleted.modelResults;
-
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15.0),
-                                child: Column(
-                                  children: List.generate(
-                                    priceModels.length,
-                                    (index) {
-                                      // percentIcon
-                                      var percentIcon =
-                                          DecimalRounder.setPercentChangesIcon(
-                                              priceModels[index].percentChange);
-
-                                      return Container(
-                                        margin: EdgeInsets.only(
-                                          top: index == 0 ? 15.0 : 4.0,
-                                          bottom:
-                                              index == (priceModels.length - 1)
-                                                  ? 15.0
-                                                  : 4.0,
-                                        ),
-                                        height: 70.0,
-                                        decoration: BoxDecoration(
-                                          color: cardColor,
-                                          borderRadius:
-                                              BorderRadius.circular(12.0),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 5, left: 15.0),
-                                          child: Row(
-                                            children: [
-                                              // HomeScreen.labelTitle == 'ارز دیجیتال'
-                                              //     ? Text(
-                                              //         '${index + 1}',
-                                              //         style: textTheme.titleSmall,
-                                              //       )
-                                              //     : const SizedBox(),
-                                              // image
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 15.0),
-                                                child: HomeScreen.labelTitle ==
-                                                        'ارز مرجع'
-                                                    ? SvgPicture.network(
-                                                        priceModels[index]
-                                                            .imageUrl,
-                                                        width: 25.0,
-                                                        height: 25.0,
-                                                        fit: BoxFit.cover,
-                                                        placeholderBuilder:
-                                                            (BuildContext
-                                                                    context) =>
-                                                                CircularProgressIndicator(
-                                                          color: primaryColor,
-                                                          strokeWidth: 3.0,
-                                                        ),
-                                                      )
-                                                    : ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(30.0),
-                                                        child:
-                                                            CachedNetworkImage(
-                                                          fadeInDuration:
-                                                              const Duration(
-                                                                  milliseconds:
-                                                                      500),
-                                                          width: HomeScreen
-                                                                      .labelTitle ==
-                                                                  'طلا'
-                                                              ? 45.0
-                                                              : 35.0,
-                                                          height: 35.0,
-                                                          imageUrl:
-                                                              priceModels[index]
-                                                                  .imageUrl,
-                                                          fit: BoxFit.cover,
-                                                          placeholder:
-                                                              (context, url) =>
-                                                                  Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(5.0),
-                                                            child:
-                                                                CircularProgressIndicator(
-                                                              color:
-                                                                  primaryColor,
-                                                              strokeWidth: 3.0,
-                                                            ),
-                                                          ),
-                                                          errorWidget: (context,
-                                                                  url, error) =>
-                                                              Icon(
-                                                            Icons.error,
-                                                            color: Colors
-                                                                .grey.shade700,
-                                                          ),
-                                                        ),
-                                                      ),
-                                              ),
-                                              // title and time update
-                                              Flexible(
-                                                fit: FlexFit.tight,
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      HomeScreen.labelTitle ==
-                                                              'ارز دیجیتال'
-                                                          ? priceModels[index]
-                                                                      .title
-                                                                      .length >
-                                                                  8
-                                                              ? priceModels[
-                                                                      index]
-                                                                  .title
-                                                                  .substring(
-                                                                      0, 8)
-                                                              : priceModels[
-                                                                      index]
-                                                                  .title
-                                                          : priceModels[index]
-                                                              .title,
-                                                      style:
-                                                          textTheme.labelLarge,
-                                                    ),
-                                                    const SizedBox(height: 6.0),
-                                                    Text(
-                                                      priceModels[index]
-                                                          .timeUpdate,
-                                                      style: textTheme.labelSmall,
-                                                    ),
-                                                    // Text(
-                                                    //   cryptoList[index]
-                                                    //       .symbol
-                                                    //       .toString(),
-                                                    //   style: textTheme.labelSmall,
-                                                    // ),
-                                                  ],
-                                                ),
-                                              ),
-                                              // price and percent
-                                              Flexible(
-                                                fit: FlexFit.tight,
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.end,
-                                                  children: [
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.end,
-                                                      children: [
-                                                        Text(
-                                                          HomeScreen.labelTitle ==
-                                                                  'ارز دیجیتال'
-                                                              ? priceModels[index]
-                                                                          .price
-                                                                          .length >
-                                                                      10
-                                                                  ? priceModels[
-                                                                          index]
-                                                                      .price
-                                                                      .substring(
-                                                                          0, 10)
-                                                                  : priceModels[
-                                                                          index]
-                                                                      .price
-                                                                      .substring(
-                                                                          1)
-                                                              : priceModels[
-                                                                      index]
-                                                                  .price,
-                                                          style: textTheme
-                                                              .labelLarge,
-                                                        ),
-                                                        const SizedBox(
-                                                            width: 4.0),
-                                                        Text(
-                                                          HomeScreen.labelTitle ==
-                                                                  'ارز دیجیتال'
-                                                              ? 'دلار'
-                                                              : 'ریال',
-                                                          style: TextStyle(
-                                                            fontSize: 14.0,
-                                                            color: Colors
-                                                                .grey.shade600,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    const SizedBox(height: 4.0),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.end,
-                                                      children: [
-                                                        percentIcon,
-                                                        Text(
-                                                          priceModels[index]
-                                                                      .percentChange ==
-                                                                  'low'
-                                                              ? priceModels[
-                                                                          index]
-                                                                      .percent
-                                                                      .substring(
-                                                                          1) +
-                                                                  ' -'
-                                                              : priceModels[index]
-                                                                          .percentChange ==
-                                                                      'high'
-                                                                  ? priceModels[
-                                                                              index]
-                                                                          .percent +
-                                                                      ' +'
-                                                                  : priceModels[
-                                                                          index]
-                                                                      .percent,
-                                                          style: TextStyle(
-                                                            fontSize: 14.0,
-                                                            color: DecimalRounder
-                                                                .setPercentChangesColor(
-                                                                    priceModels[
-                                                                            index]
-                                                                        .percentChange),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              );
-                            }
-                            // Error
-                            if (state.pricesDataStatus is PricesDataError) {
-                              return const Text('error');
-                            }
-                            return Container();
-                          },
-                        ),
-                      ],
-                    );
-                  }),
-                ],
-              ),
-            ),
-            // appbar
-            Container(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              padding: const EdgeInsets.only(top: 5.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Builder(
-                    builder: (context) => IconButton(
-                      icon: Icon(
-                        Icons.menu_rounded,
-                        color: Colors.grey.shade800,
-                        size: 24.0,
                       ),
-                      onPressed: () => Scaffold.of(context).openDrawer(),
-                      tooltip: MaterialLocalizations.of(context)
-                          .openAppDrawerTooltip,
-                    ),
-                  ),
-                  // title appbar
-                  Text('قیمت آنلاین', style: textTheme.titleLarge),
-                  const SizedBox(
-                    width: 65.0,
-                  ),
-                ],
+                    );
+                  }
+                  // Error
+                  if (state.pricesDataStatus is PricesDataCompleted) {
+                    return const Text('Error');
+                  }
+
+                  return Container();
+                },
               ),
-            ),
-          ],
-        ),
+            ],
+          );
+        }),
       ),
     );
   }

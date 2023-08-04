@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:price_online/common/bloc/change_index/change_index_cubit.dart';
@@ -35,27 +37,34 @@ class LebelButton extends StatelessWidget {
             HomeScreen.labelTitle = title;
             BlocProvider.of<PricesCubit>(context).callGoldDataEvent();
           }
+
           /// Coin
           if (index == 1) {
             HomeScreen.labelTitle = title;
             BlocProvider.of<PricesCubit>(context).callCoinDataEvent();
           }
+
           /// Currency
           if (index == 2) {
             HomeScreen.labelTitle = title;
             BlocProvider.of<PricesCubit>(context).callCurrencyDataEvent();
           }
+
           /// Crypto
           if (index == 3) {
             HomeScreen.labelTitle = title;
             BlocProvider.of<PricesCubit>(context).callCryptoDataEvent();
+
+            Timer.periodic(const Duration(seconds: 10), (timer) {
+              BlocProvider.of<PricesCubit>(context).refreshCryptoDataEvent();
+            });
           }
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 12.0),
           decoration: BoxDecoration(
             color: state == index ? primaryColor : Colors.grey.shade200,
-            borderRadius: BorderRadius.circular(12.0),
+            borderRadius: BorderRadius.circular(30.0),
           ),
           child: Text(title, style: textTheme.labelLarge),
         ),

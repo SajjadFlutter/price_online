@@ -235,12 +235,22 @@ class PricesRepository {
                   ? 'high'
                   : 'unChanged';
 
+          // Date
+          String hour = DateTime.now().hour.toString().length < 2
+              ? '0${DateTime.now().hour}'
+              : '${DateTime.now().hour}';
+          String minute = DateTime.now().minute.toString().length < 2
+              ? '0${DateTime.now().minute}'
+              : '${DateTime.now().minute}';
+          String second = DateTime.now().second.toString().length < 2
+              ? '0${DateTime.now().second}'
+              : '${DateTime.now().second}';
+
           cryptoResults.add(
             CryptoModel(
               imageUrl: imageUrl,
               title: title,
-              timeUpdate:
-                  '${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}',
+              timeUpdate: '$hour:$minute:$second',
               price: price,
               percent: percent,
               percentChange: percentChange,
