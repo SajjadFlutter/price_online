@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:price_online/common/bloc/change_index/change_index_cubit.dart';
@@ -125,20 +127,23 @@ class HomeScreen extends StatelessWidget {
                 builder: (context, state) {
                   // Loading
                   if (state.pricesDataStatus is PricesDataLoading) {
-                    return Expanded(
-                      child: ListView.builder(
-                        itemCount: HomeScreen.labelTitle == 'طلا'
-                            ? 3
-                            : HomeScreen.labelTitle == 'سکه'
-                                ? 5
-                                : 10,
-                        itemBuilder: (context, index) => Shimmer.fromColors(
-                          baseColor: Colors.grey.shade400,
-                          highlightColor: Colors.grey.shade200,
-                          child: const ShimmerItem(),
-                        ),
-                      ),
+                    return RefreshProgressIndicator(
+                      color: primaryColor,
                     );
+                    // Expanded(
+                    //   child: ListView.builder(
+                    //     itemCount: HomeScreen.labelTitle == 'طلا'
+                    //         ? 3
+                    //         : HomeScreen.labelTitle == 'سکه'
+                    //             ? 5
+                    //             : 10,
+                    //     itemBuilder: (context, index) => Shimmer.fromColors(
+                    //       baseColor: Colors.grey.shade400,
+                    //       highlightColor: Colors.grey.shade200,
+                    //       child: const ShimmerItem(),
+                    //     ),
+                    //   ),
+                    // );
                   }
                   // Completed
                   if (state.pricesDataStatus is PricesDataCompleted) {
@@ -150,24 +155,52 @@ class HomeScreen extends StatelessWidget {
                     return Expanded(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                        child: ListView.builder(
-                          physics: const BouncingScrollPhysics(),
-                          itemCount: priceModels.length,
-                          itemBuilder: (context, index) {
-                            // percentIcon
-                            var percentIcon =
-                                DecimalRounder.setPercentChangesIcon(
-                                    priceModels[index].percentChange);
+                        child: RefreshIndicator(
+                          color: primaryColor,
+                          child: ListView.builder(
+                            physics: const BouncingScrollPhysics(),
+                            itemCount: priceModels.length,
+                            itemBuilder: (context, index) {
+                              // percentIcon
+                              var percentIcon =
+                                  DecimalRounder.setPercentChangesIcon(
+                                      priceModels[index].percentChange);
 
-                            return PriceItem(
-                              index: index,
-                              priceModels: priceModels,
-                              cardColor: cardColor,
-                              labelTitle: labelTitle,
-                              primaryColor: primaryColor,
-                              textTheme: textTheme,
-                              percentIcon: percentIcon,
+                              return PriceItem(
+                                index: index,
+                                priceModels: priceModels,
+                                cardColor: cardColor,
+                                labelTitle: labelTitle,
+                                primaryColor: primaryColor,
+                                textTheme: textTheme,
+                                percentIcon: percentIcon,
+                              );
+                            },
+                          ),
+                          onRefresh: () async {
+                            await Future.delayed(
+                              const Duration(seconds: 1),
                             );
+
+                            switch (HomeScreen.labelTitle) {
+                              case 'طلا':
+                                BlocProvider.of<PricesCubit>(context)
+                                    .refreshGoldDataEvent();
+                                break;
+                              case 'سکه':
+                                BlocProvider.of<PricesCubit>(context)
+                                    .refreshCoinDataEvent();
+                                break;
+                              case 'ارز مرجع':
+                                BlocProvider.of<PricesCubit>(context)
+                                    .refreshCurrencyDataEvent();
+                                break;
+                              case 'ارز دیجیتال':
+                                BlocProvider.of<PricesCubit>(context)
+                                    .refreshCryptoDataEvent();
+                                break;
+                              default:
+                            }
                           },
                         ),
                       ),
