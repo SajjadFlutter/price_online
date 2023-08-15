@@ -22,8 +22,22 @@ class LebelButton extends StatelessWidget {
   final int index;
   final String title;
 
+  static Timer _timer = Timer(const Duration(seconds: 10), () {});
+
   @override
   Widget build(BuildContext context) {
+    void startTimer(Function refreshFunction) {
+      const duration = Duration(seconds: 10);
+      _timer = Timer.periodic(duration, (timer) {
+        // کدی که برای هر بار اجرا شدن تایمر انجام میشود
+        refreshFunction();
+      });
+    }
+
+    void stopTimer() {
+      _timer.cancel();
+    }
+
     return Padding(
       padding: const EdgeInsets.only(left: 10.0),
       child: GestureDetector(
@@ -36,18 +50,36 @@ class LebelButton extends StatelessWidget {
           if (index == 0) {
             HomeScreen.labelTitle = title;
             BlocProvider.of<PricesCubit>(context).callGoldDataEvent();
+
+            stopTimer();
+
+            startTimer(() {
+              BlocProvider.of<PricesCubit>(context).refreshGoldDataEvent();
+            });
           }
 
           /// Coin
           if (index == 1) {
             HomeScreen.labelTitle = title;
             BlocProvider.of<PricesCubit>(context).callCoinDataEvent();
+
+            stopTimer();
+
+            startTimer(() {
+              BlocProvider.of<PricesCubit>(context).refreshCoinDataEvent();
+            });
           }
 
           /// Currency
           if (index == 2) {
             HomeScreen.labelTitle = title;
             BlocProvider.of<PricesCubit>(context).callCurrencyDataEvent();
+
+            stopTimer();
+
+            startTimer(() {
+              BlocProvider.of<PricesCubit>(context).refreshCurrencyDataEvent();
+            });
           }
 
           /// Crypto
@@ -55,7 +87,9 @@ class LebelButton extends StatelessWidget {
             HomeScreen.labelTitle = title;
             BlocProvider.of<PricesCubit>(context).callCryptoDataEvent();
 
-            Timer.periodic(const Duration(seconds: 10), (timer) {
+            stopTimer();
+
+            startTimer(() {
               BlocProvider.of<PricesCubit>(context).refreshCryptoDataEvent();
             });
           }

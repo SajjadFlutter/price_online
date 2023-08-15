@@ -33,11 +33,45 @@ class PricesCubit extends Cubit<PricesState> {
     }
   }
 
+  // Refresh Gold Data
+  Future<void> refreshGoldDataEvent() async {
+    final DataState dataState = await pricesRepository.fetchGoldData();
+
+    if (dataState is DataSuccess) {
+      // emit completed
+      emit(state.copyWith(
+          newPricesDataStatus: PricesDataCompleted(dataState.data)));
+    }
+
+    if (dataState is DataFailed) {
+      // emit error
+      emit(state.copyWith(
+          newPricesDataStatus: PricesDataError(dataState.error!)));
+    }
+  }
+
   // Coin Data
   Future<void> callCoinDataEvent() async {
     // emit loading
     emit(state.copyWith(newPricesDataStatus: PricesDataLoading()));
 
+    final DataState dataState = await pricesRepository.fetchCoinData();
+
+    if (dataState is DataSuccess) {
+      // emit completed
+      emit(state.copyWith(
+          newPricesDataStatus: PricesDataCompleted(dataState.data)));
+    }
+
+    if (dataState is DataFailed) {
+      // emit error
+      emit(state.copyWith(
+          newPricesDataStatus: PricesDataError(dataState.error!)));
+    }
+  }
+
+  // Refresh Coin Data
+  Future<void> refreshCoinDataEvent() async {
     final DataState dataState = await pricesRepository.fetchCoinData();
 
     if (dataState is DataSuccess) {
@@ -73,6 +107,23 @@ class PricesCubit extends Cubit<PricesState> {
     }
   }
 
+  // Refresh Currency Data
+  Future<void> refreshCurrencyDataEvent() async {
+    final DataState dataState = await pricesRepository.fetchCurrencyData();
+
+    if (dataState is DataSuccess) {
+      // emit completed
+      emit(state.copyWith(
+          newPricesDataStatus: PricesDataCompleted(dataState.data)));
+    }
+
+    if (dataState is DataFailed) {
+      // emit error
+      emit(state.copyWith(
+          newPricesDataStatus: PricesDataError(dataState.error!)));
+    }
+  }
+
   // Crypto Data
   Future<void> callCryptoDataEvent() async {
     // emit loading
@@ -93,7 +144,7 @@ class PricesCubit extends Cubit<PricesState> {
     }
   }
 
-  // Refresh Gold Data
+  // Refresh Crypto Data
   Future<void> refreshCryptoDataEvent() async {
     final DataState dataState = await pricesRepository.fetchCryptoData();
 

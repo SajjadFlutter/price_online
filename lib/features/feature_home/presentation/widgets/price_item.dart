@@ -151,16 +151,26 @@ class PriceItem extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           percentIcon,
-                          Text(
-                            priceModels[index].percentChange == 'low'
-                                ? priceModels[index].percent.substring(1) + ' -'
-                                : priceModels[index].percentChange == 'high'
-                                    ? priceModels[index].percent + ' +'
-                                    : priceModels[index].percent,
-                            style: TextStyle(
-                              fontSize: 14.0,
-                              color: DecimalRounder.setPercentChangesColor(
-                                  priceModels[index].percentChange),
+                          Directionality(
+                            textDirection:
+                                HomeScreen.labelTitle != 'ارز دیجیتال'
+                                    ? TextDirection.ltr
+                                    : TextDirection.rtl,
+                            child: Text(
+                              priceModels[index].percentChange == 'low'
+                                  ? HomeScreen.labelTitle == 'ارز دیجیتال'
+                                      ? '${priceModels[index].percent.substring(1)} -'
+                                      : '- ${priceModels[index].percent.substring(0)}'
+                                  : priceModels[index].percentChange == 'high'
+                                      ? HomeScreen.labelTitle == 'ارز دیجیتال'
+                                          ? '${priceModels[index].percent} +'
+                                          : '+ ${priceModels[index].percent}'
+                                      : priceModels[index].percent,
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                color: DecimalRounder.setPercentChangesColor(
+                                    priceModels[index].percentChange),
+                              ),
                             ),
                           ),
                         ],
