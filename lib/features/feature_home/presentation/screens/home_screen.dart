@@ -7,14 +7,21 @@ import 'package:price_online/common/helper/decimal_rounder.dart';
 import 'package:price_online/features/feature_home/presentation/bloc/prices_cubit/prices_cubit.dart';
 import 'package:price_online/features/feature_home/presentation/widgets/lebel_button.dart';
 import 'package:price_online/features/feature_home/presentation/widgets/price_item.dart';
-import 'package:price_online/features/feature_home/presentation/widgets/shimmer_item.dart';
 import 'package:price_online/main.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   static String labelTitle = 'طلا';
+  // label categories
+  static final labelCategories = [
+    'طلا',
+    'سکه',
+    'ارز مرجع',
+    'ارز دیجیتال',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +31,6 @@ class HomeScreen extends StatelessWidget {
     var textTheme = Theme.of(context).textTheme;
     var primaryColor = Theme.of(context).primaryColor;
     var cardColor = Theme.of(context).cardColor;
-
-    // label categories
-    final labelCategories = ['طلا', 'سکه', 'ارز مرجع', 'ارز دیجیتال'];
 
     return Scaffold(
       // drawer
@@ -41,13 +45,21 @@ class HomeScreen extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.headset_mic_rounded),
               title: Text('پشتیبانی', style: textTheme.titleLarge),
-              onTap: () {},
+              onTap: () async {
+                final Uri _url = Uri.parse('https://t.me/price_online_support');
+                if (!await launchUrl(_url)) {
+                  throw 'Could not launch $_url';
+                }
+                // await launchUrl(_url.toString());
+              },
             ),
             ListTile(
               leading: const Icon(Icons.share),
               title:
                   Text('ارسال برنامه به دوستان', style: textTheme.titleLarge),
-              onTap: () {},
+              onTap: () {
+                Share.share('package="com.example.price_online');
+              },
             ),
             ListTile(
               leading: const Icon(Icons.star_rounded, size: 27.0),
@@ -66,7 +78,7 @@ class HomeScreen extends StatelessWidget {
               // appbar
               Container(
                 color: Theme.of(context).scaffoldBackgroundColor,
-                padding: const EdgeInsets.only(top: 5.0),
+                padding: const EdgeInsets.only(top: 8.0),
                 child: Column(
                   children: [
                     Row(
@@ -87,19 +99,22 @@ class HomeScreen extends StatelessWidget {
                         // title appbar
                         Text('قیمت آنلاین', style: textTheme.titleLarge),
                         const SizedBox(
-                          width: 65.0,
+                          width: 48.0,
                         ),
                       ],
                     ),
                   ],
                 ),
               ),
+              //
+              const SizedBox(height: 3.0),
               // Lelel categories
               BlocBuilder<ChangeIndexCubit, int>(
                 builder: (context, state) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  return SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: List.generate(
                         labelCategories.length,
                         (index) => LebelButton(
@@ -115,7 +130,7 @@ class HomeScreen extends StatelessWidget {
                 },
               ),
               //
-              const SizedBox(height: 10.0),
+              const SizedBox(height: 15.0),
               // Prices list
               BlocBuilder<PricesCubit, PricesState>(
                 buildWhen: (previous, current) {
@@ -130,20 +145,6 @@ class HomeScreen extends StatelessWidget {
                     return RefreshProgressIndicator(
                       color: primaryColor,
                     );
-                    // Expanded(
-                    //   child: ListView.builder(
-                    //     itemCount: HomeScreen.labelTitle == 'طلا'
-                    //         ? 3
-                    //         : HomeScreen.labelTitle == 'سکه'
-                    //             ? 5
-                    //             : 10,
-                    //     itemBuilder: (context, index) => Shimmer.fromColors(
-                    //       baseColor: Colors.grey.shade400,
-                    //       highlightColor: Colors.grey.shade200,
-                    //       child: const ShimmerItem(),
-                    //     ),
-                    //   ),
-                    // );
                   }
                   // Completed
                   if (state.pricesDataStatus is PricesDataCompleted) {

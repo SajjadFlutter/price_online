@@ -39,7 +39,7 @@ class PriceItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: Padding(
-        padding: const EdgeInsets.only(right: 5, left: 15.0),
+        padding: const EdgeInsets.only(left: 15.0),
         child: Row(
           children: [
             // HomeScreen.labelTitle == 'ارز دیجیتال'
@@ -57,22 +57,26 @@ class PriceItem extends StatelessWidget {
                       width: 25.0,
                       height: 25.0,
                       fit: BoxFit.cover,
-                      placeholderBuilder: (BuildContext context) =>
-                          CircularProgressIndicator(
-                        color: primaryColor,
-                        strokeWidth: 3.0,
+                      placeholderBuilder: (BuildContext context) => SizedBox(
+                        width: 30.0,
+                        height: 30.0,
+                        child: CircularProgressIndicator(
+                          color: primaryColor,
+                          strokeWidth: 3.0,
+                        ),
                       ),
                     )
                   : ClipRRect(
                       borderRadius: BorderRadius.circular(30.0),
                       child: CachedNetworkImage(
                         fadeInDuration: const Duration(milliseconds: 500),
-                        width: HomeScreen.labelTitle == 'طلا' ? 45.0 : 35.0,
-                        height: 35.0,
+                        width: HomeScreen.labelTitle == 'طلا' ? 45.0 : 38.0,
+                        height: HomeScreen.labelTitle == 'طلا' ? 45.0 : 38.0,
                         imageUrl: priceModels[index].imageUrl,
                         fit: BoxFit.cover,
                         placeholder: (context, url) => Padding(
-                          padding: const EdgeInsets.all(5.0),
+                          padding: EdgeInsets.all(
+                              HomeScreen.labelTitle == 'طلا' ? 7.0 : 3.0),
                           child: CircularProgressIndicator(
                             color: primaryColor,
                             strokeWidth: 3.0,
@@ -160,11 +164,11 @@ class PriceItem extends StatelessWidget {
                               priceModels[index].percentChange == 'low'
                                   ? HomeScreen.labelTitle == 'ارز دیجیتال'
                                       ? '${priceModels[index].percent.substring(1)} -'
-                                      : '- ${priceModels[index].percent.substring(0)}'
+                                      : '- ${priceModels[index].percent.substring(0)}%'
                                   : priceModels[index].percentChange == 'high'
                                       ? HomeScreen.labelTitle == 'ارز دیجیتال'
                                           ? '${priceModels[index].percent} +'
-                                          : '+ ${priceModels[index].percent}'
+                                          : '+ ${priceModels[index].percent}%'
                                       : priceModels[index].percent,
                               style: TextStyle(
                                 fontSize: 14.0,

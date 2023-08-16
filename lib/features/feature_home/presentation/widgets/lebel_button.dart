@@ -39,7 +39,10 @@ class LebelButton extends StatelessWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.only(left: 10.0),
+      padding: EdgeInsets.only(
+        left: 10.0,
+        right: index == 0 ? 12.0 : 0.0,
+      ),
       child: GestureDetector(
         onTap: () {
           // call index
@@ -95,6 +98,7 @@ class LebelButton extends StatelessWidget {
           }
         },
         child: Container(
+          // margin: EdgeInsets.s,
           padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 12.0),
           decoration: BoxDecoration(
             color: state == index ? primaryColor : Colors.grey.shade200,

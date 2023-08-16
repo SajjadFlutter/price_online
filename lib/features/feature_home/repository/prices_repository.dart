@@ -44,7 +44,7 @@ class PricesRepository {
             String price = priceElements[i].text.trim();
 
             String percent = percentElements[i].text.trim();
-            percent = percent.substring(1, percent.length - 1);
+            percent = percent.substring(1, percent.length - 3);
 
             String percentChange =
                 percentChangeElements[i].className.contains('high')
@@ -108,7 +108,7 @@ class PricesRepository {
             String price = priceElements[i].text.trim();
 
             String percent = percentElements[i].text.trim();
-            percent = percent.substring(1, percent.length - 1);
+            percent = percent.substring(1, percent.length - 3);
 
             String percentChange =
                 percentChangeElements[i].className.contains('high')
@@ -168,7 +168,7 @@ class PricesRepository {
           String price = priceElements[i].text.trim();
 
           String percent = percentElements[i].text.trim();
-          percent = percent.substring(1, percent.length - 1);
+          percent = percent.substring(1, percent.length - 3);
 
           String percentChange =
               percentChangeElements[i].className.contains('high')
