@@ -47,6 +47,7 @@ dependencies:
   flutter_svg: ^2.0.7
   share_plus: ^4.0.3
   url_launcher: ^6.1.12
+  persian_number_utility: ^1.1.3
 
 dev_dependencies:
   flutter_test:
@@ -87,9 +88,9 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: yekan
+    - family: shabnam
       fonts:
-        - asset: assets/fonts/Yekan.ttf
+        - asset: assets/fonts/Shabnam.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

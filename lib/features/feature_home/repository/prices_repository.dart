@@ -21,7 +21,7 @@ class PricesRepository {
 
         List<GoldModel> goldResults = [];
         List<String> goldImages = [
-          'https://fs.noorgram.ir/xen/2021/05/1937_a04f325674750b15e1a00d49222b587f_thumb.jpg',
+          'https://icons.veryicon.com/png/o/miscellaneous/a-set-of-color-icons-for-financial-management/gold-bullion-4.png',
         ];
 
         var goldElements = document.querySelectorAll('#gold .tr-price');
@@ -34,36 +34,34 @@ class PricesRepository {
             document.querySelectorAll('#gold .tr-price .d');
 
         for (var i = 0; i < goldElements.length; i++) {
-          if (i == 0 || i == 5 || i == 7) {
-            String imageUrl = goldImages[0];
+          String imageUrl = goldImages[0];
 
-            String title = titleElements[i].text.trim();
+          String title = titleElements[i].text.trim();
 
-            String timeUpdate = timeUpdateElements[i].text.trim();
+          String timeUpdate = timeUpdateElements[i].text.trim();
 
-            String price = priceElements[i].text.trim();
+          String price = priceElements[i].text.trim();
 
-            String percent = percentElements[i].text.trim();
-            percent = percent.substring(1, percent.length - 3);
+          String percent = percentElements[i].text.trim();
+          percent = percent.substring(1, percent.length - 3);
 
-            String percentChange =
-                percentChangeElements[i].className.contains('high')
-                    ? 'high'
-                    : percentChangeElements[i].className.contains('low')
-                        ? 'low'
-                        : 'unChanged';
+          String percentChange =
+              percentChangeElements[i].className.contains('high')
+                  ? 'high'
+                  : percentChangeElements[i].className.contains('low')
+                      ? 'low'
+                      : 'unChanged';
 
-            goldResults.add(
-              GoldModel(
-                imageUrl: imageUrl,
-                title: title,
-                timeUpdate: timeUpdate,
-                price: price,
-                percent: percent,
-                percentChange: percentChange,
-              ),
-            );
-          }
+          goldResults.add(
+            GoldModel(
+              imageUrl: imageUrl,
+              title: title,
+              timeUpdate: timeUpdate,
+              price: price,
+              percent: percent,
+              percentChange: percentChange,
+            ),
+          );
         }
 
         return DataSuccess(goldResults);
@@ -84,11 +82,7 @@ class PricesRepository {
 
         List<CoinModel> coinResults = [];
         List<String> coinImages = [
-          'https://storage.torob.com/backend-api/base/images/uI/ru/uIru5jH_Z3Wkdh_k.png_/216x216.jpg',
-          'https://storage.torob.com/backend-api/base/images/uI/ru/uIru5jH_Z3Wkdh_k.png_/216x216.jpg',
-          'https://storage.torob.com/backend-api/base/images/f2/uJ/f2uJwWbvGo9Ooxi1.png_/216x216.jpg',
-          'https://storage.torob.com/backend-api/base/images/f2/uJ/f2uJwWbvGo9Ooxi1.png_/216x216.jpg',
-          'https://storage.torob.com/backend-api/base/images/f2/uJ/f2uJwWbvGo9Ooxi1.png_/216x216.jpg',
+          'https://cutewallpaper.org/24/gold-coin-png/gold-coin-vector-png-600x600-png-download-pngkit.png',
         ];
 
         var coinElements = document.querySelectorAll('#coin .tr-price');
@@ -102,7 +96,7 @@ class PricesRepository {
 
         for (var i = 0; i < coinElements.length; i++) {
           if (i < 5) {
-            String imageUrl = coinImages[i];
+            String imageUrl = coinImages[0];
             String title = titleElements[i].text.trim();
             String timeUpdate = timeUpdateElements[i].text.trim();
             String price = priceElements[i].text.trim();
@@ -213,6 +207,8 @@ class PricesRepository {
             document.querySelectorAll('.coingecko-table tbody tr td div img');
         var titleElements =
             document.querySelectorAll('.coingecko-table .coin-name .font-bold');
+        var symbolElements =
+            document.querySelectorAll('.coingecko-table .coin-name .font-bold');
         var priceElements = document.querySelectorAll(
             '.coingecko-table .td-price [data-target="price.price"]');
         var percentElements = document.querySelectorAll(
@@ -222,11 +218,10 @@ class PricesRepository {
           String imageUrl = imagesElements[i].attributes['src'].toString();
 
           String title = titleElements[i].text.trim();
+          String symbol = symbolElements[i].text.trim();
           String price = priceElements[i].text.trim();
 
           String percent = percentElements[i].text.trim();
-
-          // print(percentElements[i].text);
 
           String percentChange = percentElements[i].text.trim().contains('-')
               ? 'low'
@@ -250,6 +245,7 @@ class PricesRepository {
             CryptoModel(
               imageUrl: imageUrl,
               title: title,
+              symbol: symbol,
               timeUpdate: '$hour:$minute:$second',
               price: price,
               percent: percent,

@@ -44,11 +44,11 @@ class HomeScreen extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.headset_mic_rounded),
-              title: Text('پشتیبانی', style: textTheme.titleLarge),
+              title: Text('پشتیبانی', style: textTheme.titleMedium),
               onTap: () async {
-                final Uri _url = Uri.parse('https://t.me/price_online_support');
-                if (!await launchUrl(_url)) {
-                  throw 'Could not launch $_url';
+                final Uri url = Uri.parse('https://t.me/price_online_support');
+                if (!await launchUrl(url)) {
+                  throw 'Could not launch $url';
                 }
                 // await launchUrl(_url.toString());
               },
@@ -56,14 +56,14 @@ class HomeScreen extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.share),
               title:
-                  Text('ارسال برنامه به دوستان', style: textTheme.titleLarge),
+                  Text('ارسال برنامه به دوستان', style: textTheme.titleMedium),
               onTap: () {
                 Share.share('package="com.example.price_online');
               },
             ),
             ListTile(
               leading: const Icon(Icons.star_rounded, size: 27.0),
-              title: Text('ارسال نظر', style: textTheme.titleLarge),
+              title: Text('ارسال نظر', style: textTheme.titleMedium),
               onTap: () {},
             ),
           ],
@@ -107,22 +107,26 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               //
-              const SizedBox(height: 3.0),
+              const SizedBox(height: 9.0),
               // Lelel categories
               BlocBuilder<ChangeIndexCubit, int>(
                 builder: (context, state) {
-                  return SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: List.generate(
-                        labelCategories.length,
-                        (index) => LebelButton(
-                          primaryColor: primaryColor,
-                          textTheme: textTheme,
-                          state: state,
-                          index: index,
-                          title: labelCategories[index],
+                  return SizedBox(
+                    width: double.infinity,
+                    child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: List.generate(
+                          labelCategories.length,
+                          (index) => LebelButton(
+                            primaryColor: primaryColor,
+                            textTheme: textTheme,
+                            state: state,
+                            index: index,
+                            title: labelCategories[index],
+                          ),
                         ),
                       ),
                     ),
@@ -130,7 +134,7 @@ class HomeScreen extends StatelessWidget {
                 },
               ),
               //
-              const SizedBox(height: 15.0),
+              const SizedBox(height: 20.0),
               // Prices list
               BlocBuilder<PricesCubit, PricesState>(
                 buildWhen: (previous, current) {
@@ -143,7 +147,7 @@ class HomeScreen extends StatelessWidget {
                   // Loading
                   if (state.pricesDataStatus is PricesDataLoading) {
                     return RefreshProgressIndicator(
-                      color: primaryColor,
+                      color: Colors.grey.shade800,
                     );
                   }
                   // Completed
@@ -155,9 +159,9 @@ class HomeScreen extends StatelessWidget {
 
                     return Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: RefreshIndicator(
-                          color: primaryColor,
+                          color: Colors.grey.shade800,
                           child: ListView.builder(
                             physics: const BouncingScrollPhysics(),
                             itemCount: priceModels.length,

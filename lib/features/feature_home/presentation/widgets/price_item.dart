@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:price_online/common/helper/decimal_rounder.dart';
 import 'package:price_online/features/feature_home/presentation/bloc/prices_cubit/prices_cubit.dart';
 import 'package:price_online/features/feature_home/presentation/screens/home_screen.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
 class PriceItem extends StatelessWidget {
   const PriceItem({
@@ -54,8 +55,8 @@ class PriceItem extends StatelessWidget {
               child: HomeScreen.labelTitle == 'ارز مرجع'
                   ? SvgPicture.network(
                       priceModels[index].imageUrl,
-                      width: 25.0,
-                      height: 25.0,
+                      width: 20.0,
+                      height: 20.0,
                       fit: BoxFit.cover,
                       placeholderBuilder: (BuildContext context) => SizedBox(
                         width: 30.0,
@@ -70,13 +71,12 @@ class PriceItem extends StatelessWidget {
                       borderRadius: BorderRadius.circular(30.0),
                       child: CachedNetworkImage(
                         fadeInDuration: const Duration(milliseconds: 500),
-                        width: HomeScreen.labelTitle == 'طلا' ? 45.0 : 38.0,
-                        height: HomeScreen.labelTitle == 'طلا' ? 45.0 : 38.0,
+                        width: 30.0,
+                        height: 30.0,
                         imageUrl: priceModels[index].imageUrl,
                         fit: BoxFit.cover,
                         placeholder: (context, url) => Padding(
-                          padding: EdgeInsets.all(
-                              HomeScreen.labelTitle == 'طلا' ? 7.0 : 3.0),
+                          padding: const EdgeInsets.all(3.0),
                           child: CircularProgressIndicator(
                             color: primaryColor,
                             strokeWidth: 3.0,
@@ -89,7 +89,7 @@ class PriceItem extends StatelessWidget {
                       ),
                     ),
             ),
-            // title and time update
+            // title and symbol and time update
             Flexible(
               fit: FlexFit.tight,
               child: Column(
@@ -104,17 +104,21 @@ class PriceItem extends StatelessWidget {
                         : priceModels[index].title,
                     style: textTheme.labelLarge,
                   ),
-                  const SizedBox(height: 6.0),
-                  Text(
-                    priceModels[index].timeUpdate,
-                    style: textTheme.labelSmall,
+                  const SizedBox(height: 4.0),
+                  Row(
+                    children: [
+                      Text(
+                        '${priceModels[index].timeUpdate}'.toPersianDigit(),
+                        style: const TextStyle(color: Colors.grey),
+                      ),
+                      HomeScreen.labelTitle == 'ارز دیجیتال'
+                          ? Text(
+                              ' |  ${priceModels[index].symbol}',
+                              style: const TextStyle(color: Colors.grey),
+                            )
+                          : Container(),
+                    ],
                   ),
-                  // Text(
-                  //   cryptoList[index]
-                  //       .symbol
-                  //       .toString(),
-                  //   style: textTheme.labelSmall,
-                  // ),
                 ],
               ),
             ),
@@ -133,9 +137,12 @@ class PriceItem extends StatelessWidget {
                           Text(
                             HomeScreen.labelTitle == 'ارز دیجیتال'
                                 ? priceModels[index].price.length > 10
-                                    ? priceModels[index].price.substring(0, 10)
-                                    : priceModels[index].price.substring(1)
-                                : priceModels[index].price,
+                                    ? '${priceModels[index].price.substring(0, 10)}'
+                                        .toPersianDigit()
+                                    : '${priceModels[index].price.substring(1)}'
+                                        .toPersianDigit()
+                                : '${priceModels[index].price}'
+                                    .toPersianDigit(),
                             style: textTheme.labelLarge,
                           ),
                           const SizedBox(width: 4.0),
@@ -143,14 +150,14 @@ class PriceItem extends StatelessWidget {
                             HomeScreen.labelTitle == 'ارز دیجیتال'
                                 ? 'دلار'
                                 : 'ریال',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 14.0,
-                              color: Colors.grey.shade600,
+                              color: Colors.grey,
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 4.0),
+                      const SizedBox(height: 2.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -163,13 +170,14 @@ class PriceItem extends StatelessWidget {
                             child: Text(
                               priceModels[index].percentChange == 'low'
                                   ? HomeScreen.labelTitle == 'ارز دیجیتال'
-                                      ? '${priceModels[index].percent.substring(1)} -'
-                                      : '- ${priceModels[index].percent.substring(0)}%'
+                                      ? '${'${priceModels[index].percent.substring(1)}'.toPersianDigit()} -'
+                                      : '- ${'${priceModels[index].percent.substring(0)}'.toPersianDigit()}%'
                                   : priceModels[index].percentChange == 'high'
                                       ? HomeScreen.labelTitle == 'ارز دیجیتال'
-                                          ? '${priceModels[index].percent} +'
-                                          : '+ ${priceModels[index].percent}%'
-                                      : priceModels[index].percent,
+                                          ? '${'${priceModels[index].percent}'.toPersianDigit()} +'
+                                          : '+ ${'${priceModels[index].percent}'.toPersianDigit()}%'
+                                      : '${priceModels[index].percent}'
+                                          .toPersianDigit(),
                               style: TextStyle(
                                 fontSize: 14.0,
                                 color: DecimalRounder.setPercentChangesColor(

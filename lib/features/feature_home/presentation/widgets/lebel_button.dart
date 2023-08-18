@@ -27,7 +27,7 @@ class LebelButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void startTimer(Function refreshFunction) {
-      const duration = Duration(seconds: 10);
+      const duration = Duration(seconds: 30);
       _timer = Timer.periodic(duration, (timer) {
         // کدی که برای هر بار اجرا شدن تایمر انجام میشود
         refreshFunction();
@@ -41,7 +41,7 @@ class LebelButton extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(
         left: 10.0,
-        right: index == 0 ? 12.0 : 0.0,
+        right: index == 0 ? 10.0 : 0.0,
       ),
       child: GestureDetector(
         onTap: () {
@@ -99,12 +99,21 @@ class LebelButton extends StatelessWidget {
         },
         child: Container(
           // margin: EdgeInsets.s,
-          padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 12.0),
+          padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
           decoration: BoxDecoration(
             color: state == index ? primaryColor : Colors.grey.shade200,
-            borderRadius: BorderRadius.circular(30.0),
+            borderRadius: BorderRadius.circular(15.0),
           ),
-          child: Text(title, style: textTheme.labelLarge),
+          child: Text(
+            title,
+            style: state == index
+                ? const TextStyle(
+                    color: Colors.white,
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.bold,
+                  )
+                : textTheme.labelLarge,
+          ),
         ),
       ),
     );

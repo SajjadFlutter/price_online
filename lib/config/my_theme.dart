@@ -3,16 +3,17 @@ import 'package:flutter/material.dart';
 class MyTheme {
   // light theme
   static final lightTheme = ThemeData(
-    fontFamily: 'yekan',
+    fontFamily: 'shabnam',
     textTheme: TextTheme(
       titleLarge: TextStyle(
         color: Colors.grey.shade800,
-        fontSize: 18.0,
+        fontSize: 19.0,
         fontWeight: FontWeight.bold,
       ),
       titleMedium: TextStyle(
         color: Colors.grey.shade800,
-        fontSize: 18.0,
+        fontSize: 16.0,
+        fontWeight: FontWeight.bold,
       ),
       labelLarge: TextStyle(
         color: Colors.grey.shade800,
@@ -21,11 +22,11 @@ class MyTheme {
       ),
       labelMedium: TextStyle(
         color: Colors.grey.shade800,
-        fontSize: 12.0,
+        fontSize: 14.0,
       ),
       bodyMedium: TextStyle(
         color: Colors.grey.shade800,
-        fontSize: 10.0,
+        fontSize: 12.0,
       ),
     ),
     iconTheme: IconThemeData(color: Colors.grey.shade800),
