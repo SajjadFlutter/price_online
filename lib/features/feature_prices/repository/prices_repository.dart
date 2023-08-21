@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:html/parser.dart';
 import 'package:price_online/common/resources/data_state.dart';
-import 'package:price_online/features/feature_home/data/data_source/remote/prices_api_provider.dart';
-import 'package:price_online/features/feature_home/data/models/coin_model.dart';
-import 'package:price_online/features/feature_home/data/models/crypto_model.dart';
-import 'package:price_online/features/feature_home/data/models/currency_model.dart';
-import 'package:price_online/features/feature_home/data/models/gold_model.dart';
+import 'package:price_online/features/feature_prices/data/data_source/remote/prices_api_provider.dart';
+import 'package:price_online/features/feature_prices/data/models/coin_model.dart';
+import 'package:price_online/features/feature_prices/data/models/crypto_model.dart';
+import 'package:price_online/features/feature_prices/data/models/currency_model.dart';
+import 'package:price_online/features/feature_prices/data/models/gold_model.dart';
 
 class PricesRepository {
   final PricesApiProvider apiProvider;

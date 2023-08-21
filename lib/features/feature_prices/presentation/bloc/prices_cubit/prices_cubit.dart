@@ -3,7 +3,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:price_online/common/resources/data_state.dart';
-import 'package:price_online/features/feature_home/repository/prices_repository.dart';
+import 'package:price_online/features/feature_prices/repository/prices_repository.dart';
 
 part 'prices_state.dart';
 part 'prices_data_status.dart';

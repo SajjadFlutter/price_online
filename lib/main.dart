@@ -4,10 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:price_online/common/bloc/change_index/change_index_cubit.dart';
 import 'package:price_online/config/my_theme.dart';
-import 'package:price_online/features/feature_home/presentation/bloc/prices_cubit/prices_cubit.dart';
-import 'package:price_online/features/feature_home/repository/prices_repository.dart';
 import 'package:price_online/features/feature_intro/presentation/bloc/splash_cubit/splash_cubit.dart';
 import 'package:price_online/features/feature_intro/presentation/screens/splash_screen.dart';
+import 'package:price_online/features/feature_prices/presentation/bloc/prices_cubit/prices_cubit.dart';
+import 'package:price_online/features/feature_prices/repository/prices_repository.dart';
 import 'package:price_online/locator.dart';
 
 void main() async {

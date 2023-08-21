@@ -1,36 +1,79 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: unused_element
+
+import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:price_online/common/bloc/change_index/change_index_cubit.dart';
-import 'package:price_online/common/helper/decimal_rounder.dart';
-import 'package:price_online/features/feature_home/presentation/bloc/prices_cubit/prices_cubit.dart';
-import 'package:price_online/features/feature_home/presentation/widgets/lebel_button.dart';
-import 'package:price_online/features/feature_home/presentation/widgets/price_item.dart';
+import 'package:price_online/features/feature_home/presentation/widgets/category_widget.dart';
 import 'package:price_online/main.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
-  static String labelTitle = 'طلا';
-  // label categories
-  static final labelCategories = [
-    'طلا',
-    'سکه',
-    'ارز مرجع',
-    'ارز دیجیتال',
-  ];
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     // change statusbar color
     MyApp.changeColor(Colors.transparent, Brightness.dark);
+    // size divaces
+    var width = MediaQuery.of(context).size.width;
     // theme
     var textTheme = Theme.of(context).textTheme;
     var primaryColor = Theme.of(context).primaryColor;
     var cardColor = Theme.of(context).cardColor;
+
+    // Sliders
+    List<String> sliderImages = [
+      'assets/images/a1.png',
+      'assets/images/a2.png',
+      'assets/images/a3.png',
+      'assets/images/a4.png',
+    ];
+
+    final PageController pageViewController = PageController(initialPage: 0);
+    int currentSlide = 0;
+    Timer? timer;
+
+    @override
+    void dispose() {
+      super.dispose();
+
+      if (timer != null) {
+        timer.cancel();
+      }
+    }
+
+    timer ??= Timer.periodic(
+      const Duration(seconds: 4),
+      (timer) {
+        if (currentSlide < 4) {
+          currentSlide++;
+        } else {
+          currentSlide = 0;
+        }
+
+        if (pageViewController.positions.isNotEmpty) {
+          pageViewController.animateToPage(currentSlide,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeIn);
+        }
+      },
+    );
+
+    // Categories
+    List<String> categoryImages = [
+      'assets/images/gold.svg',
+      'assets/images/coin.svg',
+      'assets/images/money.svg',
+      'assets/images/bitcoin.svg',
+    ];
+    List<String> categoryTitles = ['طلا', 'سکه', 'ارز مرجع', 'ارز دیجیتال'];
 
     return Scaffold(
       // drawer
@@ -70,158 +113,120 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       body: SafeArea(
-        child: Builder(builder: (context) {
-          // call gold api
-          BlocProvider.of<PricesCubit>(context).callGoldDataEvent();
-          return Column(
-            children: [
-              // appbar
-              Container(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Builder(
-                          builder: (context) => IconButton(
-                            icon: Icon(
-                              Icons.menu_rounded,
-                              color: Colors.grey.shade800,
-                              size: 24.0,
-                            ),
-                            onPressed: () => Scaffold.of(context).openDrawer(),
-                            tooltip: MaterialLocalizations.of(context)
-                                .openAppDrawerTooltip,
+        child: Column(
+          children: [
+            // appbar
+            Container(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Builder(
+                        builder: (context) => IconButton(
+                          icon: Icon(
+                            Icons.menu_rounded,
+                            color: Colors.grey.shade800,
+                            size: 24.0,
                           ),
+                          onPressed: () => Scaffold.of(context).openDrawer(),
+                          tooltip: MaterialLocalizations.of(context)
+                              .openAppDrawerTooltip,
                         ),
-                        // title appbar
-                        Text('قیمت آنلاین', style: textTheme.titleLarge),
-                        const SizedBox(
-                          width: 48.0,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                      // title appbar
+                      Text('قیمت آنلاین', style: textTheme.titleLarge),
+                      const SizedBox(
+                        width: 45.0,
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              //
-              const SizedBox(height: 9.0),
-              // Lelel categories
-              BlocBuilder<ChangeIndexCubit, int>(
-                builder: (context, state) {
-                  return SizedBox(
-                    width: double.infinity,
-                    child: SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: List.generate(
-                          labelCategories.length,
-                          (index) => LebelButton(
-                            primaryColor: primaryColor,
-                            textTheme: textTheme,
-                            state: state,
-                            index: index,
-                            title: labelCategories[index],
-                          ),
+            ),
+            // sliders
+            SizedBox(
+              width: width,
+              height: 180,
+              child: PageView.builder(
+                itemCount: sliderImages.length,
+                controller: pageViewController,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      // print(sliderImages[index]);
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.all(15.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(25.0),
+                        child: Image(
+                          image: AssetImage(sliderImages[index]),
+                          fit: BoxFit.fill,
                         ),
                       ),
                     ),
                   );
                 },
               ),
-              //
-              const SizedBox(height: 20.0),
-              // Prices list
-              BlocBuilder<PricesCubit, PricesState>(
-                buildWhen: (previous, current) {
-                  if (previous.pricesDataStatus == current.pricesDataStatus) {
-                    return false;
-                  }
-                  return true;
-                },
-                builder: (context, state) {
-                  // Loading
-                  if (state.pricesDataStatus is PricesDataLoading) {
-                    return RefreshProgressIndicator(
-                      color: Colors.grey.shade800,
-                    );
-                  }
-                  // Completed
-                  if (state.pricesDataStatus is PricesDataCompleted) {
-                    PricesDataCompleted pricesDataCompleted =
-                        state.pricesDataStatus as PricesDataCompleted;
-                    // models
-                    List priceModels = pricesDataCompleted.modelResults;
-
-                    return Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: RefreshIndicator(
-                          color: Colors.grey.shade800,
-                          child: ListView.builder(
-                            physics: const BouncingScrollPhysics(),
-                            itemCount: priceModels.length,
-                            itemBuilder: (context, index) {
-                              // percentIcon
-                              var percentIcon =
-                                  DecimalRounder.setPercentChangesIcon(
-                                      priceModels[index].percentChange);
-
-                              return PriceItem(
-                                index: index,
-                                priceModels: priceModels,
-                                cardColor: cardColor,
-                                labelTitle: labelTitle,
-                                primaryColor: primaryColor,
-                                textTheme: textTheme,
-                                percentIcon: percentIcon,
-                              );
-                            },
-                          ),
-                          onRefresh: () async {
-                            await Future.delayed(
-                              const Duration(seconds: 1),
-                            );
-
-                            switch (HomeScreen.labelTitle) {
-                              case 'طلا':
-                                BlocProvider.of<PricesCubit>(context)
-                                    .refreshGoldDataEvent();
-                                break;
-                              case 'سکه':
-                                BlocProvider.of<PricesCubit>(context)
-                                    .refreshCoinDataEvent();
-                                break;
-                              case 'ارز مرجع':
-                                BlocProvider.of<PricesCubit>(context)
-                                    .refreshCurrencyDataEvent();
-                                break;
-                              case 'ارز دیجیتال':
-                                BlocProvider.of<PricesCubit>(context)
-                                    .refreshCryptoDataEvent();
-                                break;
-                              default:
-                            }
-                          },
-                        ),
+            ),
+            // page indicator
+            sliderImages.length > 1
+                ? SmoothPageIndicator(
+                    controller: pageViewController,
+                    count: sliderImages.length,
+                    effect: ExpandingDotsEffect(
+                      dotHeight: 8.0,
+                      dotWidth: 8.0,
+                      activeDotColor: primaryColor,
+                      dotColor: Colors.grey.shade400,
+                      spacing: 5.0,
+                    ),
+                  )
+                : Container(),
+            //
+            const SizedBox(height: 5.0),
+            // categories
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      const SizedBox(width: 5.0),
+                      Text('بازار ها', style: textTheme.titleMedium),
+                    ],
+                  ),
+                  const SizedBox(height: 10.0),
+                  SizedBox(
+                    height: 120,
+                    child: GridView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 4,
+                        crossAxisSpacing: 15.0,
                       ),
-                    );
-                  }
-                  // Error
-                  if (state.pricesDataStatus is PricesDataCompleted) {
-                    return const Text('Error');
-                  }
-
-                  return Container();
-                },
+                      itemCount: 4,
+                      itemBuilder: (context, index) {
+                        return CategoryWidget(
+                          image: categoryImages[index],
+                          title: categoryTitles[index],
+                          textTheme: textTheme,
+                          cardColor: cardColor,
+                          primaryColor: primaryColor,
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
-            ],
-          );
-        }),
+            )
+          ],
+        ),
       ),
     );
   }
