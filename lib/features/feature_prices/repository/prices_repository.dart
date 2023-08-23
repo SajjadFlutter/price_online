@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:html/parser.dart';
 import 'package:price_online/common/resources/data_state.dart';
+import 'package:price_online/features/feature_home/presentation/screens/home_screen.dart';
 import 'package:price_online/features/feature_prices/data/data_source/remote/prices_api_provider.dart';
 import 'package:price_online/features/feature_prices/data/models/coin_model.dart';
 import 'package:price_online/features/feature_prices/data/models/crypto_model.dart';
@@ -19,6 +20,7 @@ class PricesRepository {
       if (response.statusCode == 200) {
         var document = parse(response.data);
 
+        List<GoldModel> topGoldResults = [];
         List<GoldModel> goldResults = [];
         List<String> goldImages = [
           'https://icons.veryicon.com/png/o/miscellaneous/a-set-of-color-icons-for-financial-management/gold-bullion-4.png',
@@ -52,6 +54,19 @@ class PricesRepository {
                       ? 'low'
                       : 'unChanged';
 
+          if (i == 0 || i == 5 || i == 10) {
+            topGoldResults.add(
+              GoldModel(
+                imageUrl: imageUrl,
+                title: title,
+                timeUpdate: timeUpdate,
+                price: price,
+                percent: percent,
+                percentChange: percentChange,
+              ),
+            );
+          }
+
           goldResults.add(
             GoldModel(
               imageUrl: imageUrl,
@@ -64,7 +79,9 @@ class PricesRepository {
           );
         }
 
-        return DataSuccess(goldResults);
+        return HomeScreen.isHomeScreen
+            ? DataSuccess(topGoldResults)
+            : DataSuccess(goldResults);
       } else {
         return const DataFailed('مشکلی پیش آمده، لطفا دوباره امتحان کنید.');
       }
@@ -80,6 +97,7 @@ class PricesRepository {
       if (response.statusCode == 200) {
         var document = parse(response.data);
 
+        List<CoinModel> topCoinResults = [];
         List<CoinModel> coinResults = [];
         List<String> coinImages = [
           'https://cutewallpaper.org/24/gold-coin-png/gold-coin-vector-png-600x600-png-download-pngkit.png',
@@ -95,23 +113,23 @@ class PricesRepository {
             document.querySelectorAll('#coin .tr-price .d');
 
         for (var i = 0; i < coinElements.length; i++) {
-          if (i < 5) {
-            String imageUrl = coinImages[0];
-            String title = titleElements[i].text.trim();
-            String timeUpdate = timeUpdateElements[i].text.trim();
-            String price = priceElements[i].text.trim();
+          String imageUrl = coinImages[0];
+          String title = titleElements[i].text.trim();
+          String timeUpdate = timeUpdateElements[i].text.trim();
+          String price = priceElements[i].text.trim();
 
-            String percent = percentElements[i].text.trim();
-            percent = percent.substring(1, percent.length - 3);
+          String percent = percentElements[i].text.trim();
+          percent = percent.substring(1, percent.length - 3);
 
-            String percentChange =
-                percentChangeElements[i].className.contains('high')
-                    ? 'high'
-                    : percentChangeElements[i].className.contains('low')
-                        ? 'low'
-                        : 'unChanged';
+          String percentChange =
+              percentChangeElements[i].className.contains('high')
+                  ? 'high'
+                  : percentChangeElements[i].className.contains('low')
+                      ? 'low'
+                      : 'unChanged';
 
-            coinResults.add(
+          if (i < 3) {
+            topCoinResults.add(
               CoinModel(
                 imageUrl: imageUrl,
                 title: title,
@@ -122,9 +140,22 @@ class PricesRepository {
               ),
             );
           }
+
+          coinResults.add(
+            CoinModel(
+              imageUrl: imageUrl,
+              title: title,
+              timeUpdate: timeUpdate,
+              price: price,
+              percent: percent,
+              percentChange: percentChange,
+            ),
+          );
         }
 
-        return DataSuccess(coinResults);
+        return HomeScreen.isHomeScreen
+            ? DataSuccess(topCoinResults)
+            : DataSuccess(coinResults);
       } else {
         return const DataFailed('مشکلی پیش آمده، لطفا دوباره امتحان کنید.');
       }
@@ -140,6 +171,7 @@ class PricesRepository {
       if (response.statusCode == 200) {
         var document = parse(response.data);
 
+        List<CurrencyModel> topCurrencyResults = [];
         List<CurrencyModel> currencyResults = [];
 
         var currencyElements = document.querySelectorAll('#azad .tr-price');
@@ -171,6 +203,19 @@ class PricesRepository {
                       ? 'low'
                       : 'unChanged';
 
+          if (i < 3) {
+            topCurrencyResults.add(
+              CurrencyModel(
+                imageUrl: imageUrl,
+                title: title,
+                timeUpdate: timeUpdate,
+                price: price,
+                percent: percent,
+                percentChange: percentChange,
+              ),
+            );
+          }
+
           currencyResults.add(
             CurrencyModel(
               imageUrl: imageUrl,
@@ -183,7 +228,9 @@ class PricesRepository {
           );
         }
 
-        return DataSuccess(currencyResults);
+        return HomeScreen.isHomeScreen
+            ? DataSuccess(topCurrencyResults)
+            : DataSuccess(currencyResults);
       } else {
         return const DataFailed('مشکلی پیش آمده، لطفا دوباره امتحان کنید.');
       }
@@ -199,6 +246,7 @@ class PricesRepository {
       if (response.statusCode == 200) {
         var document = parse(response.data);
 
+        List<CryptoModel> topCryptoResults = [];
         List<CryptoModel> cryptoResults = [];
 
         var cryptoElements =
@@ -241,6 +289,20 @@ class PricesRepository {
               ? '0${DateTime.now().second}'
               : '${DateTime.now().second}';
 
+          if (i < 3) {
+            topCryptoResults.add(
+              CryptoModel(
+                imageUrl: imageUrl,
+                title: title,
+                symbol: symbol,
+                timeUpdate: '$hour:$minute:$second',
+                price: price,
+                percent: percent,
+                percentChange: percentChange,
+              ),
+            );
+          }
+
           cryptoResults.add(
             CryptoModel(
               imageUrl: imageUrl,
@@ -254,7 +316,9 @@ class PricesRepository {
           );
         }
 
-        return DataSuccess(cryptoResults);
+        return HomeScreen.isHomeScreen
+            ? DataSuccess(topCryptoResults)
+            : DataSuccess(cryptoResults);
       } else {
         return const DataFailed('مشکلی پیش آمده، لطفا دوباره امتحان کنید.');
       }

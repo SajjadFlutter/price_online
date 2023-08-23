@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:price_online/common/bloc/change_index/change_index_cubit.dart';
+import 'package:price_online/features/feature_home/presentation/screens/home_screen.dart';
 import 'package:price_online/features/feature_prices/presentation/bloc/prices_cubit/prices_cubit.dart';
-import 'package:price_online/features/feature_prices/presentation/screens/prices_screen.dart';
 
 class LebelButton extends StatelessWidget {
   const LebelButton({
@@ -51,7 +51,7 @@ class LebelButton extends StatelessWidget {
           // call prices data
           /// Gold
           if (index == 0) {
-            PricesScreen.labelTitle = title;
+            HomeScreen.labelTitle = title;
             BlocProvider.of<PricesCubit>(context).callGoldDataEvent();
 
             stopTimer();
@@ -63,7 +63,7 @@ class LebelButton extends StatelessWidget {
 
           /// Coin
           if (index == 1) {
-            PricesScreen.labelTitle = title;
+            HomeScreen.labelTitle = title;
             BlocProvider.of<PricesCubit>(context).callCoinDataEvent();
 
             stopTimer();
@@ -75,7 +75,7 @@ class LebelButton extends StatelessWidget {
 
           /// Currency
           if (index == 2) {
-            PricesScreen.labelTitle = title;
+            HomeScreen.labelTitle = title;
             BlocProvider.of<PricesCubit>(context).callCurrencyDataEvent();
 
             stopTimer();
@@ -87,7 +87,7 @@ class LebelButton extends StatelessWidget {
 
           /// Crypto
           if (index == 3) {
-            PricesScreen.labelTitle = title;
+            HomeScreen.labelTitle = title;
             BlocProvider.of<PricesCubit>(context).callCryptoDataEvent();
 
             stopTimer();
@@ -98,11 +98,10 @@ class LebelButton extends StatelessWidget {
           }
         },
         child: Container(
-          // margin: EdgeInsets.s,
-          padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+          padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 8.0),
           decoration: BoxDecoration(
             color: state == index ? primaryColor : Colors.grey.shade200,
-            borderRadius: BorderRadius.circular(15.0),
+            borderRadius: BorderRadius.circular(25.0),
           ),
           child: Text(
             title,
@@ -110,9 +109,8 @@ class LebelButton extends StatelessWidget {
                 ? const TextStyle(
                     color: Colors.white,
                     fontSize: 14.0,
-                    fontWeight: FontWeight.bold,
                   )
-                : textTheme.labelLarge,
+                : textTheme.labelMedium,
           ),
         ),
       ),

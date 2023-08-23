@@ -11,14 +11,13 @@ class MyTheme {
         fontWeight: FontWeight.bold,
       ),
       titleMedium: TextStyle(
-        color: Colors.grey.shade800,
-        fontSize: 16.0,
+        color: Colors.grey.shade700,
+        fontSize: 17.0,
         fontWeight: FontWeight.bold,
       ),
       labelLarge: TextStyle(
         color: Colors.grey.shade800,
         fontSize: 14.0,
-        fontWeight: FontWeight.bold,
       ),
       labelMedium: TextStyle(
         color: Colors.grey.shade800,
@@ -31,7 +30,7 @@ class MyTheme {
     ),
     iconTheme: IconThemeData(color: Colors.grey.shade800),
     cardColor: Colors.white,
-    primaryColor: Colors.amber,
+    primaryColor: const Color(0xFFFFBF00),
     secondaryHeaderColor: Colors.grey.shade600,
     hintColor: Colors.grey.shade800,
   );
