@@ -161,4 +161,40 @@ class PricesCubit extends Cubit<PricesState> {
     }
   }
 
+  // Energy Data
+  Future<void> callEnergyDataEvent() async {
+    // emit loading
+    emit(state.copyWith(newPricesDataStatus: PricesDataLoading()));
+
+    final DataState dataState = await pricesRepository.fetchEnergyData();
+
+    if (dataState is DataSuccess) {
+      // emit completed
+      emit(state.copyWith(
+          newPricesDataStatus: PricesDataCompleted(dataState.data)));
+    }
+
+    if (dataState is DataFailed) {
+      // emit error
+      emit(state.copyWith(
+          newPricesDataStatus: PricesDataError(dataState.error!)));
+    }
+  }
+
+  // Refresh Energy Data
+  Future<void> refreshEnergyDataEvent() async {
+    final DataState dataState = await pricesRepository.fetchEnergyData();
+
+    if (dataState is DataSuccess) {
+      // emit completed
+      emit(state.copyWith(
+          newPricesDataStatus: PricesDataCompleted(dataState.data)));
+    }
+
+    if (dataState is DataFailed) {
+      // emit error
+      emit(state.copyWith(
+          newPricesDataStatus: PricesDataError(dataState.error!)));
+    }
+  }
 }

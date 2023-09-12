@@ -24,12 +24,13 @@ class CategoryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        print(title);
+        PricesScreen.categoryTitle = title;
         Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const PricesScreen(),
-            ));
+          context,
+          MaterialPageRoute(
+            builder: (context) => const PricesScreen(),
+          ),
+        );
       },
       child: Container(
         decoration: BoxDecoration(

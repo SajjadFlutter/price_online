@@ -31,4 +31,16 @@ class PricesApiProvider {
 
     return response;
   }
+
+  dynamic callEnergyData() async {
+    Response response = await Dio().get('https://bazaretala.com/brent-oil-prices-and-energy');
+
+    return response;
+  }
+
+  dynamic callMetalData() async {
+    Response response = await Dio().get('https://bazaretala.com/rhodium-price');
+
+    return response;
+  }
 }

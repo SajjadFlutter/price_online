@@ -6,6 +6,7 @@ import 'package:price_online/common/helper/decimal_rounder.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 import 'package:price_online/features/feature_home/presentation/screens/home_screen.dart';
 import 'package:price_online/features/feature_prices/presentation/bloc/prices_cubit/prices_cubit.dart';
+import 'package:price_online/features/feature_prices/presentation/screens/prices_screen.dart';
 
 class PriceItem extends StatelessWidget {
   const PriceItem({
@@ -34,13 +35,19 @@ class PriceItem extends StatelessWidget {
         top: index == 0 ? 5.0 : 4.0,
         bottom: index == (priceModels.length - 1) ? 15.0 : 4.0,
       ),
-      height: 70.0,
+      height: 75.0,
       decoration: BoxDecoration(
         color: cardColor,
         borderRadius: BorderRadius.circular(12.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade100,
+            blurRadius: 10.0,
+          ),
+        ],
       ),
       child: Padding(
-        padding: const EdgeInsets.only(left: 15.0),
+        padding: const EdgeInsets.only(top: 12.0, bottom: 12.0, left: 15.0),
         child: Row(
           children: [
             // HomeScreen.labelTitle == 'ارز دیجیتال'
@@ -52,7 +59,7 @@ class PriceItem extends StatelessWidget {
             // image
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: HomeScreen.labelTitle == 'ارز مرجع'
+              child: PricesScreen.categoryTitle == 'ارز مرجع'
                   ? SvgPicture.network(
                       priceModels[index].imageUrl,
                       width: 20.0,
@@ -97,21 +104,21 @@ class PriceItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    HomeScreen.labelTitle == 'ارز دیجیتال'
+                    PricesScreen.categoryTitle == 'ارز دیجیتال'
                         ? priceModels[index].title.length > 8
                             ? priceModels[index].title.substring(0, 8)
                             : priceModels[index].title
                         : priceModels[index].title,
                     style: textTheme.labelLarge,
                   ),
-                  const SizedBox(height: 4.0),
+                  const SizedBox(height: 8.0),
                   Row(
                     children: [
                       Text(
                         '${priceModels[index].timeUpdate}'.toPersianDigit(),
                         style: const TextStyle(color: Colors.grey),
                       ),
-                      HomeScreen.labelTitle == 'ارز دیجیتال'
+                      PricesScreen.categoryTitle == 'ارز دیجیتال'
                           ? Text(
                               ' |  ${priceModels[index].symbol}',
                               style: const TextStyle(color: Colors.grey),
@@ -135,7 +142,7 @@ class PriceItem extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(
-                            HomeScreen.labelTitle == 'ارز دیجیتال'
+                            PricesScreen.categoryTitle == 'ارز دیجیتال'
                                 ? priceModels[index].price.length > 10
                                     ? '${priceModels[index].price.substring(0, 10)}'
                                         .toPersianDigit()
@@ -147,7 +154,8 @@ class PriceItem extends StatelessWidget {
                           ),
                           const SizedBox(width: 4.0),
                           Text(
-                            HomeScreen.labelTitle == 'ارز دیجیتال'
+                            PricesScreen.categoryTitle == 'ارز دیجیتال' ||
+                                    PricesScreen.categoryTitle == 'نفت و انرژی'
                                 ? 'دلار'
                                 : 'ریال',
                             style: const TextStyle(
@@ -157,7 +165,7 @@ class PriceItem extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 2.0),
+                      const SizedBox(height: 4.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
