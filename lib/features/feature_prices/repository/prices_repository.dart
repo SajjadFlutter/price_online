@@ -5,7 +5,9 @@ import 'package:price_online/features/feature_prices/data/data_source/remote/pri
 import 'package:price_online/features/feature_prices/data/models/coin_model.dart';
 import 'package:price_online/features/feature_prices/data/models/crypto_model.dart';
 import 'package:price_online/features/feature_prices/data/models/currency_model.dart';
+import 'package:price_online/features/feature_prices/data/models/energy_model.dart';
 import 'package:price_online/features/feature_prices/data/models/gold_model.dart';
+import 'package:price_online/features/feature_prices/data/models/metal_model.dart';
 
 class PricesRepository {
   final PricesApiProvider apiProvider;
@@ -268,7 +270,7 @@ class PricesRepository {
       if (response.statusCode == 200) {
         var document = parse(response.data);
 
-        List<GoldModel> energyResults = [];
+        List<EnergyModel> energyResults = [];
         List<String> energyImages = [
           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQG9c9duYAEbne2pwI9JeZ9NHfl9n9NGVvGGaAC7RhKwzDrejs-',
           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQG9c9duYAEbne2pwI9JeZ9NHfl9n9NGVvGGaAC7RhKwzDrejs-',
@@ -309,7 +311,69 @@ class PricesRepository {
                       : 'unChanged';
 
           energyResults.add(
-            GoldModel(
+            EnergyModel(
+              imageUrl: imageUrl,
+              title: title,
+              timeUpdate: timeUpdate,
+              price: price,
+              percent: percent,
+              percentChange: percentChange,
+            ),
+          );
+        }
+
+        return DataSuccess(energyResults);
+      } else {
+        return const DataFailed('مشکلی پیش آمده، لطفا دوباره امتحان کنید.');
+      }
+    } catch (e) {
+      return const DataFailed('لطفا اتصال خود را به اینترنت چک کنید.');
+    }
+  }
+
+  // Metal
+  Future<dynamic> fetchMetalData() async {
+    try {
+      Response response = await apiProvider.callMetalData();
+      if (response.statusCode == 200) {
+        var document = parse(response.data);
+
+        List<MetalModel> energyResults = [];
+        List<String> energyImages = [
+          'https://static.thenounproject.com/png/889209-200.png',
+        ];
+
+        var metalElements = document.querySelectorAll('.price-table .tr-price');
+        var titleElements =
+            document.querySelectorAll('.price-table .ptitle h2');
+        var timeUpdateElements =
+            document.querySelectorAll('.price-table .tr-price .t');
+        var priceElements = document.querySelectorAll('.price-table .p');
+        var percentElements = document.querySelectorAll('.price-table .d span');
+        var percentChangeElements =
+            document.querySelectorAll('.price-table .tr-price .d');
+
+        for (var i = 0; i < metalElements.length; i++) {
+          String imageUrl = energyImages[0];
+
+          String title = titleElements[i].text.trim();
+
+          String timeUpdate = timeUpdateElements[i].text.trim();
+
+          String price = priceElements[i].text.trim();
+
+          String percent = percentElements[i].text.trim();
+          percent = percent.substring(1, percent.length - 3);
+
+          String percentChange =
+              percentChangeElements[i].className.contains('high')
+                  ? 'high'
+                  : percentChangeElements[i].className.contains('low')
+                      ? 'low'
+                      : 'unChanged';
+
+          energyResults.add(
+            MetalModel(
               imageUrl: imageUrl,
               title: title,
               timeUpdate: timeUpdate,

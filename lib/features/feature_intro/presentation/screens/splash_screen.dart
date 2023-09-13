@@ -54,7 +54,6 @@ class _SplashScreenState extends State<SplashScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(width: 15.0),
                     Text('قیمت آنلاین', style: textTheme.titleLarge),
                   ],
                 ),

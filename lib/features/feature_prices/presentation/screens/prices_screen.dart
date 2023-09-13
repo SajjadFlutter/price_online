@@ -57,49 +57,61 @@ class _PricesScreenState extends State<PricesScreen> {
       });
     }
 
+    // call api
+    void callApiForPrices() {
+      switch (PricesScreen.categoryTitle) {
+        case 'طلا':
+          BlocProvider.of<PricesCubit>(context).callGoldDataEvent();
+          PricesScreen.stopTimer();
+          startTimer(() {
+            BlocProvider.of<PricesCubit>(context).refreshGoldDataEvent();
+          });
+          break;
+        case 'سکه':
+          BlocProvider.of<PricesCubit>(context).callCoinDataEvent();
+          PricesScreen.stopTimer();
+          startTimer(() {
+            BlocProvider.of<PricesCubit>(context).refreshCoinDataEvent();
+          });
+          break;
+        case 'ارز مرجع':
+          BlocProvider.of<PricesCubit>(context).callCurrencyDataEvent();
+          PricesScreen.stopTimer();
+          startTimer(() {
+            BlocProvider.of<PricesCubit>(context).refreshCurrencyDataEvent();
+          });
+          break;
+        case 'ارز دیجیتال':
+          BlocProvider.of<PricesCubit>(context).callCryptoDataEvent();
+          PricesScreen.stopTimer();
+          startTimer(() {
+            BlocProvider.of<PricesCubit>(context).refreshCryptoDataEvent();
+          });
+          break;
+        case 'نفت و انرژی':
+          BlocProvider.of<PricesCubit>(context).callEnergyDataEvent();
+          PricesScreen.stopTimer();
+          startTimer(() {
+            BlocProvider.of<PricesCubit>(context).refreshEnergyDataEvent();
+          });
+          break;
+        case 'فلزات گرانبها':
+          BlocProvider.of<PricesCubit>(context).callMetalDataEvent();
+          PricesScreen.stopTimer();
+          startTimer(() {
+            BlocProvider.of<PricesCubit>(context).refreshMetalDataEvent();
+          });
+          break;
+        default:
+      }
+    }
+
     return Scaffold(
       body: SafeArea(
         child: Builder(builder: (context) {
-          // call gold api
-          switch (PricesScreen.categoryTitle) {
-            case 'طلا':
-              BlocProvider.of<PricesCubit>(context).callGoldDataEvent();
-              PricesScreen.stopTimer();
-              startTimer(() {
-                BlocProvider.of<PricesCubit>(context).refreshGoldDataEvent();
-              });
-              break;
-            case 'سکه':
-              BlocProvider.of<PricesCubit>(context).callCoinDataEvent();
-              PricesScreen.stopTimer();
-              startTimer(() {
-                BlocProvider.of<PricesCubit>(context).refreshCoinDataEvent();
-              });
-              break;
-            case 'ارز مرجع':
-              BlocProvider.of<PricesCubit>(context).callCurrencyDataEvent();
-              PricesScreen.stopTimer();
-              startTimer(() {
-                BlocProvider.of<PricesCubit>(context)
-                    .refreshCurrencyDataEvent();
-              });
-              break;
-            case 'ارز دیجیتال':
-              BlocProvider.of<PricesCubit>(context).callCryptoDataEvent();
-              PricesScreen.stopTimer();
-              startTimer(() {
-                BlocProvider.of<PricesCubit>(context).refreshCryptoDataEvent();
-              });
-              break;
-            case 'نفت و انرژی':
-              BlocProvider.of<PricesCubit>(context).callEnergyDataEvent();
-              PricesScreen.stopTimer();
-              startTimer(() {
-                BlocProvider.of<PricesCubit>(context).refreshEnergyDataEvent();
-              });
-              break;
-            default:
-          }
+          // call api
+          callApiForPrices();
+
           return Column(
             children: [
               // appbar
@@ -109,7 +121,6 @@ class _PricesScreenState extends State<PricesScreen> {
                 child: Column(
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Builder(
                           builder: (context) => IconButton(

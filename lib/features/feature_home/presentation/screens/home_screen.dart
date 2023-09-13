@@ -176,7 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Container(
                           margin: const EdgeInsets.all(10.0),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(25.0),
+                            borderRadius: BorderRadius.circular(20.0),
                             child: Image(
                               image: AssetImage(sliderImages[index]),
                               fit: BoxFit.fill,

@@ -197,4 +197,41 @@ class PricesCubit extends Cubit<PricesState> {
           newPricesDataStatus: PricesDataError(dataState.error!)));
     }
   }
+
+  // Metal Data
+  Future<void> callMetalDataEvent() async {
+    // emit loading
+    emit(state.copyWith(newPricesDataStatus: PricesDataLoading()));
+
+    final DataState dataState = await pricesRepository.fetchMetalData();
+
+    if (dataState is DataSuccess) {
+      // emit completed
+      emit(state.copyWith(
+          newPricesDataStatus: PricesDataCompleted(dataState.data)));
+    }
+
+    if (dataState is DataFailed) {
+      // emit error
+      emit(state.copyWith(
+          newPricesDataStatus: PricesDataError(dataState.error!)));
+    }
+  }
+
+  // Refresh Metal Data
+  Future<void> refreshMetalDataEvent() async {
+    final DataState dataState = await pricesRepository.fetchMetalData();
+
+    if (dataState is DataSuccess) {
+      // emit completed
+      emit(state.copyWith(
+          newPricesDataStatus: PricesDataCompleted(dataState.data)));
+    }
+
+    if (dataState is DataFailed) {
+      // emit error
+      emit(state.copyWith(
+          newPricesDataStatus: PricesDataError(dataState.error!)));
+    }
+  }
 }
