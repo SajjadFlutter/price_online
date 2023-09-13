@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:price_online/common/bloc/change_bool/change_bool_cubit.dart';
 import 'package:price_online/common/bloc/change_index/change_index_cubit.dart';
 import 'package:price_online/config/my_theme.dart';
+import 'package:price_online/features/feature_home/presentation/bloc/theme_cubit/theme_cubit.dart';
 import 'package:price_online/features/feature_intro/presentation/bloc/splash_cubit/splash_cubit.dart';
 import 'package:price_online/features/feature_intro/presentation/screens/splash_screen.dart';
 import 'package:price_online/features/feature_prices/presentation/bloc/prices_cubit/prices_cubit.dart';
@@ -22,6 +24,8 @@ void main() async {
         BlocProvider(create: (_) => SplashCubit()),
         BlocProvider(create: (_) => ChangeIndexCubit()),
         BlocProvider(create: (_) => PricesCubit(locator<PricesRepository>())),
+        BlocProvider(create: (_) => ThemeCubit()),
+        BlocProvider(create: (_) => ChangeBoolCubit()),
       ],
       child: const MyApp(),
     ),
@@ -33,23 +37,27 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: MyTheme.lightTheme,
-      darkTheme: MyTheme.darkTheme,
-      // برای راستچین کردن اپلیکیشن
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      locale: const Locale('fa', ''),
-      supportedLocales: const [
-        Locale('en'), // English
-        Locale('fa'), // persian(farsi)
-      ],
-      title: 'قیمت آنلاین',
-      home: const SplashScreen(),
+    return BlocBuilder<ThemeCubit, ThemeData>(
+      builder: (context, state) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: state,
+          darkTheme: MyTheme.darkTheme,
+          // برای راستچین کردن اپلیکیشن
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          locale: const Locale('fa', ''),
+          supportedLocales: const [
+            Locale('en'), // English
+            Locale('fa'), // persian(farsi)
+          ],
+          title: 'قیمت آنلاین',
+          home: const SplashScreen(),
+        );
+      },
     );
   }
 

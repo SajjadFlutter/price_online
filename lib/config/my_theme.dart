@@ -33,33 +33,40 @@ class MyTheme {
     primaryColor: const Color(0xFFFFBF00),
     secondaryHeaderColor: Colors.grey.shade600,
     hintColor: Colors.grey.shade800,
+    shadowColor: Colors.grey.shade100,
   );
 
 // dark theme
   static final darkTheme = ThemeData(
-    fontFamily: 'yekan',
+    fontFamily: 'shabnam',
     textTheme: TextTheme(
       titleLarge: TextStyle(
         color: Colors.grey.shade100,
-        fontSize: 16.0,
+        fontSize: 19.0,
         fontWeight: FontWeight.bold,
       ),
       titleMedium: TextStyle(
         color: Colors.grey.shade100,
-        fontSize: 14.0,
+        fontSize: 17.0,
         fontWeight: FontWeight.bold,
+      ),
+      labelLarge: TextStyle(
+        color: Colors.grey.shade100,
+        fontSize: 14.0,
       ),
       labelMedium: TextStyle(
         color: Colors.grey.shade100,
         fontSize: 14.0,
       ),
-      bodyMedium: const TextStyle(
-        color: Colors.white,
+      bodyMedium: TextStyle(
+        color: Colors.grey.shade100,
         fontSize: 12.0,
       ),
     ),
-    cardColor: Colors.grey.shade800,
-    scaffoldBackgroundColor: Colors.grey.shade900,
-    primaryColor: const Color(0xFF4991e5),
+    cardColor: const Color(0xFF222222),
+    scaffoldBackgroundColor: const Color(0xFF191919),
+    primaryColor: const Color(0xFFFFBF00),
+    secondaryHeaderColor: Colors.grey.shade100,
+    shadowColor: Colors.black12,
   );
 }

@@ -30,6 +30,8 @@ class PriceItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var shadowColor = Theme.of(context).shadowColor;
+
     return Container(
       margin: EdgeInsets.only(
         top: index == 0 ? 5.0 : 4.0,
@@ -38,10 +40,10 @@ class PriceItem extends StatelessWidget {
       height: 75.0,
       decoration: BoxDecoration(
         color: cardColor,
-        borderRadius: BorderRadius.circular(12.0),
+        borderRadius: BorderRadius.circular(15.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.shade100,
+            color: shadowColor,
             blurRadius: 10.0,
           ),
         ],

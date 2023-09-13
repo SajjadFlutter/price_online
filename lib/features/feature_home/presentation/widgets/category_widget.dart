@@ -22,6 +22,7 @@ class CategoryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var shadowColor = Theme.of(context).shadowColor;
     return GestureDetector(
       onTap: () {
         PricesScreen.categoryTitle = title;
@@ -38,7 +39,7 @@ class CategoryWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(20.0),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.shade100,
+              color: shadowColor,
               blurRadius: 10.0,
             ),
           ],

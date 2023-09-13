@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:price_online/common/helper/decimal_rounder.dart';
+import 'package:price_online/features/feature_home/presentation/screens/home_screen.dart';
 import 'package:price_online/features/feature_prices/presentation/bloc/prices_cubit/prices_cubit.dart';
 import 'package:price_online/features/feature_prices/presentation/widgets/price_item.dart';
 import 'package:price_online/main.dart';
@@ -42,10 +43,15 @@ class _PricesScreenState extends State<PricesScreen> {
   @override
   Widget build(BuildContext context) {
     // change statusbar color
-    MyApp.changeColor(Colors.transparent, Brightness.dark);
+    if (HomeScreen.isDarkMode) {
+      MyApp.changeColor(Colors.transparent, Brightness.light);
+    } else {
+      MyApp.changeColor(Colors.transparent, Brightness.dark);
+    }
     // theme
     var textTheme = Theme.of(context).textTheme;
     var primaryColor = Theme.of(context).primaryColor;
+    var secondaryHeaderColor = Theme.of(context).secondaryHeaderColor;
     var cardColor = Theme.of(context).cardColor;
 
     // Timer for update
@@ -122,14 +128,16 @@ class _PricesScreenState extends State<PricesScreen> {
                   children: [
                     Row(
                       children: [
-                        Builder(
-                          builder: (context) => IconButton(
-                            icon: Icon(
+                        GestureDetector(
+                          onTap: (){
+                            Navigator.pop(context);
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Icon(
                               Icons.arrow_back_rounded,
-                              color: Colors.grey.shade800,
-                              size: 24.0,
+                              color: secondaryHeaderColor,
                             ),
-                            onPressed: () => Navigator.pop(context),
                           ),
                         ),
                         // title appbar

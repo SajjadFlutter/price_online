@@ -3,6 +3,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:price_online/common/bloc/change_bool/change_bool_cubit.dart';
+import 'package:price_online/features/feature_home/presentation/bloc/theme_cubit/theme_cubit.dart';
 import 'package:price_online/features/feature_home/presentation/widgets/category_widget.dart';
 import 'package:price_online/main.dart';
 import 'package:share_plus/share_plus.dart';
@@ -14,6 +17,7 @@ class HomeScreen extends StatefulWidget {
 
   static String labelTitle = 'طلا';
   static bool isHomeScreen = true;
+  static bool isDarkMode = false;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -22,14 +26,15 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    // change statusbar color
-    MyApp.changeColor(Colors.transparent, Brightness.dark);
     // size divaces
     var width = MediaQuery.of(context).size.width;
     // theme
     var textTheme = Theme.of(context).textTheme;
     var primaryColor = Theme.of(context).primaryColor;
+    var secondaryHeaderColor = Theme.of(context).secondaryHeaderColor;
     var cardColor = Theme.of(context).cardColor;
+    // change statusbar color
+    MyApp.changeColor(Colors.transparent, Brightness.dark);
 
     // Sliders
     List<String> sliderImages = [
@@ -90,6 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       // drawer
       drawer: Drawer(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         child: Column(
           children: [
             Container(
@@ -98,8 +104,11 @@ class _HomeScreenState extends State<HomeScreen> {
               color: primaryColor,
             ),
             ListTile(
-              leading: const Icon(Icons.headset_mic_rounded),
-              title: Text('پشتیبانی', style: textTheme.titleMedium),
+              leading: Icon(
+                Icons.headset_mic_rounded,
+                color: secondaryHeaderColor,
+              ),
+              title: Text('پشتیبانی', style: textTheme.labelMedium),
               onTap: () async {
                 final Uri url = Uri.parse('https://t.me/price_online_support');
                 if (!await launchUrl(url)) {
@@ -109,17 +118,65 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.share),
+              leading: Icon(
+                Icons.share,
+                color: secondaryHeaderColor,
+              ),
               title:
-                  Text('ارسال برنامه به دوستان', style: textTheme.titleMedium),
+                  Text('ارسال برنامه به دوستان', style: textTheme.labelMedium),
               onTap: () {
                 Share.share('package="com.example.price_online');
               },
             ),
             ListTile(
-              leading: const Icon(Icons.star_rounded, size: 27.0),
-              title: Text('ارسال نظر', style: textTheme.titleMedium),
+              leading: Icon(
+                Icons.star_rounded,
+                size: 25.0,
+                color: secondaryHeaderColor,
+              ),
+              title: Text('ارسال نظر', style: textTheme.labelMedium),
               onTap: () {},
+            ),
+            const Divider(),
+            ListTile(
+              leading: Icon(
+                Icons.dark_mode_rounded,
+                size: 25.0,
+                color: secondaryHeaderColor,
+              ),
+              title: Text('حالت تیره', style: textTheme.labelMedium),
+              trailing: BlocBuilder<ChangeBoolCubit, bool>(
+                builder: (context, state) {
+                  return Switch.adaptive(
+                    activeColor: primaryColor,
+                    value: state,
+                    onChanged: (state) {
+                      HomeScreen.isDarkMode != HomeScreen.isDarkMode;
+                      if (HomeScreen.isDarkMode == false) {
+                        HomeScreen.isDarkMode = true;
+                      } else {
+                        HomeScreen.isDarkMode = false;
+                      }
+                      print(HomeScreen.isDarkMode);
+
+                      context.read<ChangeBoolCubit>().changeBool();
+                      context.read<ThemeCubit>().toggleTheme();
+
+                      if (state == true) {
+                        setState(() {
+                          MyApp.changeColor(
+                              Colors.transparent, Brightness.light);
+                        });
+                      } else {
+                        setState(() {
+                          MyApp.changeColor(
+                              Colors.transparent, Brightness.dark);
+                        });
+                      }
+                    },
+                  );
+                },
+              ),
             ),
           ],
         ),
@@ -140,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         builder: (context) => IconButton(
                           icon: Icon(
                             Icons.menu_rounded,
-                            color: Colors.grey.shade800,
+                            color: secondaryHeaderColor,
                             size: 24.0,
                           ),
                           onPressed: () => Scaffold.of(context).openDrawer(),
@@ -205,6 +262,15 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             //
             const SizedBox(height: 10.0),
+            // Container(
+            //   child: Text(
+            //       DateTime.now().weekday.toString() == '3' ? 'دوشنبه' : ''),
+            // ),
+            // SizedBox(
+            //   height: 20.0,
+            //   child: Marquee(
+            //       text: 'ام', decelerationDuration: Duration(seconds: 2)),
+            // ),
             // categories
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
