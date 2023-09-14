@@ -11,6 +11,7 @@ import 'package:price_online/features/feature_intro/presentation/screens/splash_
 import 'package:price_online/features/feature_prices/presentation/bloc/prices_cubit/prices_cubit.dart';
 import 'package:price_online/features/feature_prices/repository/prices_repository.dart';
 import 'package:price_online/locator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,6 +40,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeCubit, ThemeData>(
       builder: (context, state) {
+        // Show state for dark mode or light mode
+        var isDarkMode =
+            locator<SharedPreferences>().getBool('isDarkMode') ?? false;
+
+        if (isDarkMode) {
+          state = MyTheme.darkTheme;
+        } else {
+          state = MyTheme.lightTheme;
+        }
+
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: state,

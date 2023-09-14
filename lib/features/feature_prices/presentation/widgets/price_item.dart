@@ -122,7 +122,11 @@ class PriceItem extends StatelessWidget {
                       ),
                       PricesScreen.categoryTitle == 'ارز دیجیتال'
                           ? Text(
-                              ' |  ${priceModels[index].symbol}',
+                              PricesScreen.categoryTitle == 'ارز دیجیتال'
+                                  ? priceModels[index].symbol.length > 15
+                                      ? ' | ...${priceModels[index].symbol.substring(0, 12)}'
+                                      : ' | ${priceModels[index].symbol}'
+                                  : ' | ${priceModels[index].symbol}',
                               style: const TextStyle(color: Colors.grey),
                             )
                           : Container(),
@@ -181,11 +185,11 @@ class PriceItem extends StatelessWidget {
                               priceModels[index].percentChange == 'low'
                                   ? HomeScreen.labelTitle == 'ارز دیجیتال'
                                       ? '${'${priceModels[index].percent.substring(1)}'.toPersianDigit()} -'
-                                      : '- ${'${priceModels[index].percent.substring(0)}'.toPersianDigit()}%'
+                                      : '- ${'${priceModels[index].percent.substring(1)}'.toPersianDigit()}'
                                   : priceModels[index].percentChange == 'high'
                                       ? HomeScreen.labelTitle == 'ارز دیجیتال'
                                           ? '${'${priceModels[index].percent}'.toPersianDigit()} +'
-                                          : '+ ${'${priceModels[index].percent}'.toPersianDigit()}%'
+                                          : '+ ${'${priceModels[index].percent}'.toPersianDigit()}'
                                       : '${priceModels[index].percent}'
                                           .toPersianDigit(),
                               style: TextStyle(

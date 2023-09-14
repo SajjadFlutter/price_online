@@ -7,8 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:price_online/common/bloc/change_bool/change_bool_cubit.dart';
 import 'package:price_online/features/feature_home/presentation/bloc/theme_cubit/theme_cubit.dart';
 import 'package:price_online/features/feature_home/presentation/widgets/category_widget.dart';
+import 'package:price_online/locator.dart';
 import 'package:price_online/main.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -33,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
     var primaryColor = Theme.of(context).primaryColor;
     var secondaryHeaderColor = Theme.of(context).secondaryHeaderColor;
     var cardColor = Theme.of(context).cardColor;
+    var shadowColor = Theme.of(context).shadowColor;
     // change statusbar color
     MyApp.changeColor(Colors.transparent, Brightness.dark);
 
@@ -103,6 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 200.0,
               color: primaryColor,
             ),
+            // Support
             ListTile(
               leading: Icon(
                 Icons.headset_mic_rounded,
@@ -117,6 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 // await launchUrl(_url.toString());
               },
             ),
+            // Share to another
             ListTile(
               leading: Icon(
                 Icons.share,
@@ -128,6 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Share.share('package="com.example.price_online');
               },
             ),
+            // Send idea
             ListTile(
               leading: Icon(
                 Icons.star_rounded,
@@ -138,6 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () {},
             ),
             const Divider(),
+            // Dark mode
             ListTile(
               leading: Icon(
                 Icons.dark_mode_rounded,
@@ -147,6 +154,16 @@ class _HomeScreenState extends State<HomeScreen> {
               title: Text('حالت تیره', style: textTheme.labelMedium),
               trailing: BlocBuilder<ChangeBoolCubit, bool>(
                 builder: (context, state) {
+                  // Show state for dark mode or light mode
+                  var isDarkMode =
+                      locator<SharedPreferences>().getBool('isDarkMode') ??
+                          false;
+
+                  if (isDarkMode) {
+                    state = true;
+                  } else {
+                    state = false;
+                  }
                   return Switch.adaptive(
                     activeColor: primaryColor,
                     value: state,
@@ -157,7 +174,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       } else {
                         HomeScreen.isDarkMode = false;
                       }
-                      print(HomeScreen.isDarkMode);
+                      // Save state for dark mode or light mode
+                      locator<SharedPreferences>().setBool('isDarkMode', state);
 
                       context.read<ChangeBoolCubit>().changeBool();
                       context.read<ThemeCubit>().toggleTheme();
@@ -308,7 +326,36 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             //
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 20.0),
+            // About us
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              child: Container(
+                height: 70.0,
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                decoration: BoxDecoration(
+                    color: cardColor,
+                    borderRadius: BorderRadius.circular(20.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: shadowColor,
+                        blurRadius: 10.0,
+                      ),
+                    ]),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const SizedBox(width: 15.0),
+                    Text('درباره ما', style: textTheme.titleMedium),
+                    Icon(
+                      Icons.arrow_back_ios_new_rounded,
+                      size: 18.0,
+                      color: secondaryHeaderColor,
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),

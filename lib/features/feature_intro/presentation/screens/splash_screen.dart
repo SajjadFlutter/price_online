@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // theme
     var primaryColor = Theme.of(context).primaryColor;
     // var secondaryHeaderColor = Theme.of(context).secondaryHeaderColor;
-    // var cardColor = Theme.of(context).cardColor;
+    var cardColor = Theme.of(context).cardColor;
     var textTheme = Theme.of(context).textTheme;
 
     MyApp.changeColor(Colors.transparent, Brightness.dark);
@@ -40,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: Container(
         width: width,
-        color: Colors.white,
+        color: cardColor,
         child: Stack(
           children: [
             Column(
