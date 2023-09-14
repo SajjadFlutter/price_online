@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 import 'package:price_online/common/bloc/change_bool/change_bool_cubit.dart';
 import 'package:price_online/features/feature_home/presentation/bloc/theme_cubit/theme_cubit.dart';
 import 'package:price_online/features/feature_home/presentation/widgets/category_widget.dart';
@@ -199,6 +200,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
+      // body
       body: SafeArea(
         child: Column(
           children: [
@@ -234,12 +236,12 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             // sliders
-            Column(
-              children: [
-                SizedBox(
-                  width: width,
-                  height: 160,
-                  child: PageView.builder(
+            SizedBox(
+              width: width,
+              height: 160,
+              child: Stack(
+                children: [
+                  PageView.builder(
                     physics: const BouncingScrollPhysics(),
                     itemCount: sliderImages.length,
                     controller: pageViewController,
@@ -249,7 +251,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           // print(sliderImages[index]);
                         },
                         child: Container(
-                          margin: const EdgeInsets.all(10.0),
+                          margin: const EdgeInsets.symmetric(horizontal: 15.0),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(20.0),
                             child: Image(
@@ -261,43 +263,54 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     },
                   ),
-                ),
-                // page indicator
-                sliderImages.length > 1
-                    ? SmoothPageIndicator(
-                        controller: pageViewController,
-                        count: sliderImages.length,
-                        effect: ExpandingDotsEffect(
-                          dotHeight: 8.0,
-                          dotWidth: 8.0,
-                          activeDotColor: primaryColor,
-                          dotColor: Colors.grey.shade400,
-                          spacing: 5.0,
+                  // page indicator
+                  if (sliderImages.length > 1)
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 12.0),
+                        child: SmoothPageIndicator(
+                          controller: pageViewController,
+                          count: sliderImages.length,
+                          effect: ExpandingDotsEffect(
+                            dotHeight: 8.0,
+                            dotWidth: 8.0,
+                            activeDotColor: primaryColor,
+                            dotColor: Colors.grey,
+                            spacing: 5.0,
+                          ),
                         ),
-                      )
-                    : Container(),
-              ],
+                      ),
+                    )
+                  else
+                    Container(),
+                ],
+              ),
             ),
             //
-            const SizedBox(height: 10.0),
-            // Container(
-            //   child: Text(
-            //       DateTime.now().weekday.toString() == '3' ? 'دوشنبه' : ''),
-            // ),
-            // SizedBox(
-            //   height: 20.0,
-            //   child: Marquee(
-            //       text: 'ام', decelerationDuration: Duration(seconds: 2)),
-            // ),
+            const SizedBox(height: 20.0),
             // categories
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 5.0),
-                    child: Text('بازار ها', style: textTheme.titleMedium),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 5.0),
+                        child: Text('بازار ها', style: textTheme.titleMedium),
+                      ),
+                      const SizedBox(width: 5.0),
+                      // Date
+                      Padding(
+                        padding: const EdgeInsets.only(left: 5.0),
+                        child: Text(
+                          ' ( ${(DateTime.now().weekday == 6 ? 'شنبه ' : DateTime.now().weekday == 7 ? 'یکشنبه ' : DateTime.now().weekday == 1 ? 'دوشنبه ' : DateTime.now().weekday == 2 ? 'سه شنبه ' : DateTime.now().weekday == 3 ? 'چهارشبنه ' : DateTime.now().weekday == 4 ? 'پنجشنبه ' : 'جمعه ') + DateTime.now().toPersianDateStr()} )',
+                          style: textTheme.labelMedium,
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 15.0),
                   SizedBox(
