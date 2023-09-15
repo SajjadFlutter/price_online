@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 import 'package:price_online/common/bloc/change_bool/change_bool_cubit.dart';
 import 'package:price_online/features/feature_home/presentation/bloc/theme_cubit/theme_cubit.dart';
@@ -20,7 +21,6 @@ class HomeScreen extends StatefulWidget {
 
   static String labelTitle = 'طلا';
   static bool isHomeScreen = true;
-  static bool isDarkMode = false;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -38,7 +38,15 @@ class _HomeScreenState extends State<HomeScreen> {
     var cardColor = Theme.of(context).cardColor;
     var shadowColor = Theme.of(context).shadowColor;
     // change statusbar color
-    MyApp.changeColor(Colors.transparent, Brightness.dark);
+    // Show state for dark mode or light mode
+    var isDarkMode =
+        locator<SharedPreferences>().getBool('isDarkMode') ?? false;
+
+    if (isDarkMode) {
+      MyApp.changeColor(Colors.transparent, Brightness.light);
+    } else {
+      MyApp.changeColor(Colors.transparent, Brightness.dark);
+    }
 
     // Sliders
     List<String> sliderImages = [
@@ -104,9 +112,19 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Container(
               width: MediaQuery.of(context).size.width,
-              height: 200.0,
-              color: primaryColor,
+              height: 240.0,
+              color: cardColor,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(
+                    'assets/images/app_icon.svg',
+                    width: 150.0,
+                  ),
+                ],
+              ),
             ),
+            const SizedBox(height: 10.0),
             // Support
             ListTile(
               leading: Icon(
@@ -169,29 +187,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     activeColor: primaryColor,
                     value: state,
                     onChanged: (state) {
-                      HomeScreen.isDarkMode != HomeScreen.isDarkMode;
-                      if (HomeScreen.isDarkMode == false) {
-                        HomeScreen.isDarkMode = true;
-                      } else {
-                        HomeScreen.isDarkMode = false;
-                      }
                       // Save state for dark mode or light mode
                       locator<SharedPreferences>().setBool('isDarkMode', state);
 
                       context.read<ChangeBoolCubit>().changeBool();
                       context.read<ThemeCubit>().toggleTheme();
-
-                      if (state == true) {
-                        setState(() {
-                          MyApp.changeColor(
-                              Colors.transparent, Brightness.light);
-                        });
-                      } else {
-                        setState(() {
-                          MyApp.changeColor(
-                              Colors.transparent, Brightness.dark);
-                        });
-                      }
                     },
                   );
                 },

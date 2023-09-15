@@ -5,10 +5,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:price_online/common/helper/decimal_rounder.dart';
-import 'package:price_online/features/feature_home/presentation/screens/home_screen.dart';
 import 'package:price_online/features/feature_prices/presentation/bloc/prices_cubit/prices_cubit.dart';
 import 'package:price_online/features/feature_prices/presentation/widgets/price_item.dart';
+import 'package:price_online/locator.dart';
 import 'package:price_online/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PricesScreen extends StatefulWidget {
   const PricesScreen({super.key});
@@ -43,7 +44,11 @@ class _PricesScreenState extends State<PricesScreen> {
   @override
   Widget build(BuildContext context) {
     // change statusbar color
-    if (HomeScreen.isDarkMode) {
+    // Show state for dark mode or light mode
+    var isDarkMode =
+        locator<SharedPreferences>().getBool('isDarkMode') ?? false;
+
+    if (isDarkMode) {
       MyApp.changeColor(Colors.transparent, Brightness.light);
     } else {
       MyApp.changeColor(Colors.transparent, Brightness.dark);
@@ -129,7 +134,7 @@ class _PricesScreenState extends State<PricesScreen> {
                     Row(
                       children: [
                         GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             Navigator.pop(context);
                           },
                           child: Padding(

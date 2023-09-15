@@ -6,7 +6,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:price_online/common/widgets/small_btn.dart';
 import 'package:price_online/features/feature_home/presentation/screens/home_screen.dart';
 import 'package:price_online/features/feature_intro/presentation/bloc/splash_cubit/splash_cubit.dart';
+import 'package:price_online/locator.dart';
 import 'package:price_online/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -32,15 +34,24 @@ class _SplashScreenState extends State<SplashScreen> {
     // theme
     var primaryColor = Theme.of(context).primaryColor;
     // var secondaryHeaderColor = Theme.of(context).secondaryHeaderColor;
-    var cardColor = Theme.of(context).cardColor;
+    // var cardColor = Theme.of(context).cardColor;
     var textTheme = Theme.of(context).textTheme;
 
-    MyApp.changeColor(Colors.transparent, Brightness.dark);
+    // change statusbar color
+    // Show state for dark mode or light mode
+    var isDarkMode =
+        locator<SharedPreferences>().getBool('isDarkMode') ?? false;
+
+    if (isDarkMode) {
+      MyApp.changeColor(Colors.transparent, Brightness.light);
+    } else {
+      MyApp.changeColor(Colors.transparent, Brightness.dark);
+    }
 
     return Scaffold(
       body: Container(
         width: width,
-        color: cardColor,
+        color: Theme.of(context).scaffoldBackgroundColor,
         child: Stack(
           children: [
             Column(
