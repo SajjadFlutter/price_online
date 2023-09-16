@@ -61,7 +61,7 @@ class _PricesScreenState extends State<PricesScreen> {
 
     // Timer for update
     void startTimer(Function refreshFunction) {
-      const duration = Duration(seconds: 30);
+      const duration = Duration(seconds: 20);
       PricesScreen._timer = Timer.periodic(duration, (timer) {
         // کدی که برای هر بار اجرا شدن تایمر انجام میشود
         refreshFunction();

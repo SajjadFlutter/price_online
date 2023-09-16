@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 import 'package:price_online/common/bloc/change_bool/change_bool_cubit.dart';
+import 'package:price_online/features/feature_about_us/presentation/screens/about_us_screen.dart';
 import 'package:price_online/features/feature_home/presentation/bloc/theme_cubit/theme_cubit.dart';
 import 'package:price_online/features/feature_home/presentation/widgets/category_widget.dart';
 import 'package:price_online/locator.dart';
@@ -119,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   SvgPicture.asset(
                     'assets/images/app_icon.svg',
-                    width: 150.0,
+                    width: 140.0,
                   ),
                 ],
               ),
@@ -341,9 +342,17 @@ class _HomeScreenState extends State<HomeScreen> {
             //
             const SizedBox(height: 20.0),
             // About us
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AboutUsScreen(),
+                  ),
+                );
+              },
               child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 15.0),
                 height: 70.0,
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 decoration: BoxDecoration(
