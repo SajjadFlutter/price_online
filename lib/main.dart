@@ -77,6 +77,8 @@ class MyApp extends StatelessWidget {
       SystemUiOverlayStyle(
         statusBarColor: statusBarColor,
         statusBarIconBrightness: brightness,
+        systemNavigationBarColor: statusBarColor,
+        systemNavigationBarIconBrightness: brightness,
       ),
     );
   }

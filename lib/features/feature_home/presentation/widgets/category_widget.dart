@@ -49,13 +49,13 @@ class CategoryWidget extends StatelessWidget {
           children: [
             SvgPicture.asset(
               image,
-              width: 40.0,
+              width: 35.0,
               color: primaryColor,
             ),
             const SizedBox(height: 20.0),
             Text(
               title,
-              style: textTheme.labelMedium,
+              style: textTheme.bodyMedium,
             ),
           ],
         ),

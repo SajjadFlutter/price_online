@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:price_online/common/helper/decimal_rounder.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
-import 'package:price_online/features/feature_home/presentation/screens/home_screen.dart';
 import 'package:price_online/features/feature_prices/presentation/bloc/prices_cubit/prices_cubit.dart';
 import 'package:price_online/features/feature_prices/presentation/screens/prices_screen.dart';
 
@@ -178,19 +177,19 @@ class PriceItem extends StatelessWidget {
                           percentIcon,
                           Directionality(
                             textDirection:
-                                HomeScreen.labelTitle != 'ارز دیجیتال'
+                                PricesScreen.categoryTitle != 'ارز دیجیتال'
                                     ? TextDirection.ltr
                                     : TextDirection.rtl,
                             child: Text(
                               priceModels[index].percentChange == 'low'
-                                  ? HomeScreen.labelTitle == 'ارز دیجیتال'
+                                  ? PricesScreen.categoryTitle == 'ارز دیجیتال'
                                       ? '${'${priceModels[index].percent.substring(1)}'.toPersianDigit()} -'
-                                      : '- ${'${priceModels[index].percent.substring(1)}'.toPersianDigit()}'
+                                      : '- ${'${priceModels[index].percent.substring(0)}'.toPersianDigit()}%'
                                   : priceModels[index].percentChange == 'high'
-                                      ? HomeScreen.labelTitle == 'ارز دیجیتال'
+                                      ? PricesScreen.categoryTitle == 'ارز دیجیتال'
                                           ? '${'${priceModels[index].percent}'.toPersianDigit()} +'
-                                          : '+ ${'${priceModels[index].percent}'.toPersianDigit()}'
-                                      : '${priceModels[index].percent}'
+                                          : '+ ${'${priceModels[index].percent}'.toPersianDigit()}%'
+                                      : '${priceModels[index].percent}%'
                                           .toPersianDigit(),
                               style: TextStyle(
                                 fontSize: 14.0,

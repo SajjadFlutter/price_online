@@ -159,7 +159,7 @@ class _PricesScreenState extends State<PricesScreen> {
                 ),
               ),
               //
-              const SizedBox(height: 10.0),
+              const SizedBox(height: 5.0),
               // Prices list
               BlocBuilder<PricesCubit, PricesState>(
                 buildWhen: (previous, current) {

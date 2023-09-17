@@ -111,21 +111,23 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         child: Column(
           children: [
-            Container(
+            SizedBox(
               width: MediaQuery.of(context).size.width,
               height: 240.0,
-              color: cardColor,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  const SizedBox(height: 40),
                   SvgPicture.asset(
                     'assets/images/app_icon.svg',
-                    width: 140.0,
+                    width: 120.0,
                   ),
+                  const Text('نسخه : 1.0.0'),
                 ],
               ),
             ),
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 5.0),
+            const Divider(thickness: 1.5, height: 30.0),
             // Support
             ListTile(
               leading: Icon(
@@ -163,7 +165,8 @@ class _HomeScreenState extends State<HomeScreen> {
               title: Text('ارسال نظر', style: textTheme.labelMedium),
               onTap: () {},
             ),
-            const Divider(),
+            //
+            const Divider(thickness: 1.5, height: 30.0),
             // Dark mode
             ListTile(
               leading: Icon(
@@ -208,7 +211,7 @@ class _HomeScreenState extends State<HomeScreen> {
             // appbar
             Container(
               color: Theme.of(context).scaffoldBackgroundColor,
-              padding: const EdgeInsets.only(top: 8.0),
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Column(
                 children: [
                   Row(
@@ -239,7 +242,7 @@ class _HomeScreenState extends State<HomeScreen> {
             // sliders
             SizedBox(
               width: width,
-              height: 160,
+              height: 150,
               child: Stack(
                 children: [
                   PageView.builder(
@@ -289,7 +292,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             //
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 25.0),
             // categories
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -313,7 +316,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 15.0),
+                  const SizedBox(height: 14.0),
                   SizedBox(
                     height: 300,
                     child: GridView.builder(

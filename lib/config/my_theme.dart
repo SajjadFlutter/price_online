@@ -31,9 +31,9 @@ class MyTheme {
     iconTheme: IconThemeData(color: Colors.grey.shade800),
     cardColor: Colors.white,
     primaryColor: const Color(0xFFFFBF00),
-    secondaryHeaderColor: Colors.grey.shade600,
+    secondaryHeaderColor: Colors.grey.shade700,
     hintColor: Colors.grey.shade800,
-    shadowColor: Colors.grey.shade100,
+    shadowColor: Colors.grey.shade200,
   );
 
 // dark theme

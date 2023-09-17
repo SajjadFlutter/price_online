@@ -49,6 +49,8 @@ class AboutUsScreen extends StatelessWidget {
                 ],
               ),
             ),
+            //
+            const SizedBox(height: 5.0),
             // The text for about us section
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 15.0),
