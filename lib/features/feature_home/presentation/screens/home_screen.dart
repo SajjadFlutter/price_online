@@ -1,7 +1,5 @@
 // ignore_for_file: unused_element, use_build_context_synchronously
 
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -32,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     // size divaces
     var width = MediaQuery.of(context).size.width;
+    // var height = MediaQuery.of(context).size.height;
     // theme
     var textTheme = Theme.of(context).textTheme;
     var primaryColor = Theme.of(context).primaryColor;
@@ -44,48 +43,53 @@ class _HomeScreenState extends State<HomeScreen> {
         locator<SharedPreferences>().getBool('isDarkMode') ?? false;
 
     if (isDarkMode) {
-      MyApp.changeColor(Colors.transparent, Brightness.light);
+      MyApp.changeColor(
+        Colors.transparent,
+        Brightness.light,
+        Theme.of(context).scaffoldBackgroundColor,
+      );
     } else {
-      MyApp.changeColor(Colors.transparent, Brightness.dark);
+      MyApp.changeColor(
+        Colors.transparent,
+        Brightness.dark,
+        Theme.of(context).scaffoldBackgroundColor,
+      );
     }
 
     // Sliders
     List<String> sliderImages = [
-      'assets/images/a1.png',
-      'assets/images/a2.png',
-      'assets/images/a3.png',
-      'assets/images/a4.png',
+      'assets/images/Bitpin.jpg',
     ];
 
     final PageController pageViewController = PageController(initialPage: 0);
-    int currentSlide = 0;
-    Timer? timer;
+    // int currentSlide = 0;
+    // Timer? timer;
 
-    @override
-    void dispose() {
-      super.dispose();
+    // @override
+    // void dispose() {
+    //   super.dispose();
 
-      if (timer != null) {
-        timer.cancel();
-      }
-    }
+    //   if (timer != null) {
+    //     timer.cancel();
+    //   }
+    // }
 
-    timer ??= Timer.periodic(
-      const Duration(seconds: 4),
-      (timer) {
-        if (currentSlide < 3) {
-          currentSlide++;
-        } else {
-          currentSlide = 0;
-        }
+    // timer ??= Timer.periodic(
+    //   const Duration(seconds: 4),
+    //   (timer) {
+    //     if (currentSlide < 3) {
+    //       currentSlide++;
+    //     } else {
+    //       currentSlide = 0;
+    //     }
 
-        if (pageViewController.positions.isNotEmpty) {
-          pageViewController.animateToPage(currentSlide,
-              duration: const Duration(milliseconds: 400),
-              curve: Curves.easeIn);
-        }
-      },
-    );
+    //     if (pageViewController.positions.isNotEmpty) {
+    //       pageViewController.animateToPage(currentSlide,
+    //           duration: const Duration(milliseconds: 400),
+    //           curve: Curves.easeIn);
+    //     }
+    //   },
+    // );
 
     // Categories
     List<String> categoryImages = [
@@ -251,8 +255,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     controller: pageViewController,
                     itemBuilder: (context, index) {
                       return GestureDetector(
-                        onTap: () {
-                          // print(sliderImages[index]);
+                        onTap: () async {
+                          final Uri url = Uri.parse(
+                              'https://bitpin.ir/signup/?ref=Ohk73uWx');
+                          if (!await launchUrl(url)) {
+                            throw 'Could not launch $url';
+                          }
                         },
                         child: Container(
                           margin: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -260,7 +268,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             borderRadius: BorderRadius.circular(20.0),
                             child: Image(
                               image: AssetImage(sliderImages[index]),
-                              fit: BoxFit.fill,
+                              fit: BoxFit.cover,
                             ),
                           ),
                         ),
@@ -318,7 +326,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const SizedBox(height: 14.0),
                   SizedBox(
-                    height: 300,
+                    height: width * 2 / 3,
                     child: GridView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       gridDelegate:
@@ -343,7 +351,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             //
-            const SizedBox(height: 20.0),
+            // const SizedBox(height: 20.0),
             // About us
             GestureDetector(
               onTap: () {

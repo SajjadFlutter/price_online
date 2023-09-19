@@ -49,9 +49,17 @@ class _PricesScreenState extends State<PricesScreen> {
         locator<SharedPreferences>().getBool('isDarkMode') ?? false;
 
     if (isDarkMode) {
-      MyApp.changeColor(Colors.transparent, Brightness.light);
+      MyApp.changeColor(
+        Colors.transparent,
+        Brightness.light,
+        Theme.of(context).scaffoldBackgroundColor,
+      );
     } else {
-      MyApp.changeColor(Colors.transparent, Brightness.dark);
+      MyApp.changeColor(
+        Colors.transparent,
+        Brightness.dark,
+        Theme.of(context).scaffoldBackgroundColor,
+      );
     }
     // theme
     var textTheme = Theme.of(context).textTheme;

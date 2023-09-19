@@ -189,7 +189,7 @@ class PriceItem extends StatelessWidget {
                                       ? PricesScreen.categoryTitle == 'ارز دیجیتال'
                                           ? '${'${priceModels[index].percent}'.toPersianDigit()} +'
                                           : '+ ${'${priceModels[index].percent}'.toPersianDigit()}%'
-                                      : '${priceModels[index].percent}%'
+                                      : '${priceModels[index].percent}'
                                           .toPersianDigit(),
                               style: TextStyle(
                                 fontSize: 14.0,

@@ -52,7 +52,7 @@ class CategoryWidget extends StatelessWidget {
               width: 35.0,
               color: primaryColor,
             ),
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 16.0),
             Text(
               title,
               style: textTheme.bodyMedium,

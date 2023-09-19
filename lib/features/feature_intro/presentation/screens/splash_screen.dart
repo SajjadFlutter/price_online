@@ -43,9 +43,17 @@ class _SplashScreenState extends State<SplashScreen> {
         locator<SharedPreferences>().getBool('isDarkMode') ?? false;
 
     if (isDarkMode) {
-      MyApp.changeColor(Colors.transparent, Brightness.light);
+      MyApp.changeColor(
+        Colors.transparent,
+        Brightness.light,
+        Theme.of(context).scaffoldBackgroundColor,
+      );
     } else {
-      MyApp.changeColor(Colors.transparent, Brightness.dark);
+      MyApp.changeColor(
+        Colors.transparent,
+        Brightness.dark,
+        Theme.of(context).scaffoldBackgroundColor,
+      );
     }
 
     return Scaffold(

@@ -72,12 +72,16 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  static void changeColor(Color statusBarColor, Brightness brightness) {
+  static void changeColor(
+    Color statusBarColor,
+    Brightness brightness,
+    Color systemNavigationBarColor,
+  ) {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
         statusBarColor: statusBarColor,
         statusBarIconBrightness: brightness,
-        systemNavigationBarColor: statusBarColor,
+        systemNavigationBarColor: systemNavigationBarColor,
         systemNavigationBarIconBrightness: brightness,
       ),
     );

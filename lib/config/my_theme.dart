@@ -6,25 +6,25 @@ class MyTheme {
     fontFamily: 'shabnam',
     textTheme: TextTheme(
       titleLarge: TextStyle(
-        color: Colors.grey.shade800,
+        color: Colors.grey.shade900,
         fontSize: 19.0,
         fontWeight: FontWeight.bold,
       ),
       titleMedium: TextStyle(
-        color: Colors.grey.shade700,
+        color: Colors.grey.shade900,
         fontSize: 17.0,
         fontWeight: FontWeight.bold,
       ),
       labelLarge: TextStyle(
-        color: Colors.grey.shade800,
+        color: Colors.grey.shade900,
         fontSize: 14.0,
       ),
       labelMedium: TextStyle(
-        color: Colors.grey.shade800,
+        color: Colors.grey.shade900,
         fontSize: 14.0,
       ),
       bodyMedium: TextStyle(
-        color: Colors.grey.shade800,
+        color: Colors.grey.shade900,
         fontSize: 12.0,
       ),
     ),

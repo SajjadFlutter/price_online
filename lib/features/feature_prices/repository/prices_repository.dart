@@ -340,7 +340,7 @@ class PricesRepository {
 
         List<MetalModel> energyResults = [];
         List<String> energyImages = [
-          'https://static.thenounproject.com/png/889209-200.png',
+          'https://freesvg.org/img/Farmeral-metal-icon.png',
         ];
 
         var metalElements = document.querySelectorAll('.price-table .tr-price');
