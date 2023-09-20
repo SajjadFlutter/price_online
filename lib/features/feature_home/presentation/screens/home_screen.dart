@@ -132,19 +132,34 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 5.0),
             const Divider(thickness: 1.5, height: 30.0),
-            // Support
+            // Support (Telegram)
             ListTile(
               leading: Icon(
                 Icons.headset_mic_rounded,
                 color: secondaryHeaderColor,
               ),
-              title: Text('پشتیبانی', style: textTheme.labelMedium),
+              title: Text('پشتیبانی (تلگرام)', style: textTheme.labelMedium),
               onTap: () async {
-                final Uri url = Uri.parse('https://t.me/price_online_support');
-                if (!await launchUrl(url)) {
+                final Uri url =
+                    Uri.parse('https://t.me/gheymat_online_support');
+                if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
                   throw 'Could not launch $url';
                 }
-                // await launchUrl(_url.toString());
+              },
+            ),
+            // Support (Eitaa)
+            ListTile(
+              leading: Icon(
+                Icons.headset_mic_rounded,
+                color: secondaryHeaderColor,
+              ),
+              title: Text('پشتیبانی (ایتا)', style: textTheme.labelMedium),
+              onTap: () async {
+                final Uri url =
+                    Uri.parse('https://eitaa.com/gheymat_online_support');
+                if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+                  throw 'Could not launch $url';
+                }
               },
             ),
             // Share to another
@@ -158,16 +173,6 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () {
                 Share.share('package="com.example.price_online');
               },
-            ),
-            // Send idea
-            ListTile(
-              leading: Icon(
-                Icons.star_rounded,
-                size: 25.0,
-                color: secondaryHeaderColor,
-              ),
-              title: Text('ارسال نظر', style: textTheme.labelMedium),
-              onTap: () {},
             ),
             //
             const Divider(thickness: 1.5, height: 30.0),
