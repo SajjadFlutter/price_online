@@ -27,8 +27,12 @@ class PriceItem extends StatelessWidget {
   final TextTheme textTheme;
   final Widget percentIcon;
 
+  static bool isFavorite = false;
+
   @override
   Widget build(BuildContext context) {
+    // theme
+    var primaryColor = Theme.of(context).primaryColor;
     var shadowColor = Theme.of(context).shadowColor;
 
     return Container(
@@ -51,15 +55,65 @@ class PriceItem extends StatelessWidget {
         padding: const EdgeInsets.only(top: 12.0, bottom: 12.0, left: 15.0),
         child: Row(
           children: [
-            // HomeScreen.labelTitle == 'ارز دیجیتال'
-            //     ? Text(
-            //         '${index + 1}',
-            //         style: textTheme.titleSmall,
-            //       )
-            //     : const SizedBox(),
+            // favorite
+            // Padding(
+            //   padding: const EdgeInsets.only(right: 10.0),
+            //   child: BlocBuilder<ChangeBoolCubit, bool>(
+            //     builder: (context, state) {
+            //       //
+            //       // Hive.box<PriceModel>('favoritesBox').values.forEach(
+            //       //   (priceModel) {
+            //       //     if (priceModel.categoryTitle ==
+            //       //         PricesScreen.categoryTitle) {
+            //       //       if (priceModel.index == index) {
+            //       //         if (priceModel.isFavorite ?? false) {
+            //       //           PriceItem.isFavorite = true;
+            //       //           print(index);
+            //       //         } else {
+            //       //           PriceItem.isFavorite = false;
+            //       //         }
+            //       //       }
+            //       //     }
+            //       //   },
+            //       // );
+            //       return GestureDetector(
+            //         onTap: () async {
+            //           context.read<ChangeBoolCubit>().changeBool();
+            //           // if (priceModels[index].isFavorite ?? false) {
+            //           //   await Hive.box<PriceModel>('favoritesBox')
+            //           //       .deleteAt(index);
+            //           // } else {
+            //           //   // add price model to database for favorite screen
+            //           //   await Hive.box<PriceModel>('favoritesBox').add(
+            //           //     PriceModel(
+            //           //       index: index,
+            //           //       categoryTitle: PricesScreen.categoryTitle,
+            //           //       imageUrl: priceModels[index].imageUrl,
+            //           //       title: priceModels[index].title,
+            //           //       timeUpdate: priceModels[index].timeUpdate,
+            //           //       symbol: priceModels[index].symbol ?? '',
+            //           //       price: priceModels[index].price,
+            //           //       percent: priceModels[index].percent,
+            //           //       percentChange: priceModels[index].percentChange,
+            //           //       isFavorite: priceModels[index].isFavorite,
+            //           //     ),
+            //           //   );
+            //           // }
+            //         },
+            //         child: Icon(
+            //           PriceItem.isFavorite
+            //               ? Icons.star_rounded
+            //               : Icons.star_border_rounded,
+            //           color: PriceItem.isFavorite ? primaryColor : Colors.grey,
+            //           size: 26.0,
+            //         ),
+            //       );
+            //     },
+            //   ),
+            // ),
             // image
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              padding: const EdgeInsets.only(left: 15.0, right: 14.0),
               child: PricesScreen.categoryTitle == 'ارز مرجع'
                   ? SvgPicture.network(
                       priceModels[index].imageUrl,
@@ -186,7 +240,8 @@ class PriceItem extends StatelessWidget {
                                       ? '${'${priceModels[index].percent.substring(1)}'.toPersianDigit()} -'
                                       : '- ${'${priceModels[index].percent.substring(0)}'.toPersianDigit()}%'
                                   : priceModels[index].percentChange == 'high'
-                                      ? PricesScreen.categoryTitle == 'ارز دیجیتال'
+                                      ? PricesScreen.categoryTitle ==
+                                              'ارز دیجیتال'
                                           ? '${'${priceModels[index].percent}'.toPersianDigit()} +'
                                           : '+ ${'${priceModels[index].percent}'.toPersianDigit()}%'
                                       : '${priceModels[index].percent}'

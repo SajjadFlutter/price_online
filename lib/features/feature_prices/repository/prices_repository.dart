@@ -2,12 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:html/parser.dart';
 import 'package:price_online/common/resources/data_state.dart';
 import 'package:price_online/features/feature_prices/data/data_source/remote/prices_api_provider.dart';
-import 'package:price_online/features/feature_prices/data/models/coin_model.dart';
-import 'package:price_online/features/feature_prices/data/models/crypto_model.dart';
-import 'package:price_online/features/feature_prices/data/models/currency_model.dart';
-import 'package:price_online/features/feature_prices/data/models/energy_model.dart';
-import 'package:price_online/features/feature_prices/data/models/gold_model.dart';
-import 'package:price_online/features/feature_prices/data/models/metal_model.dart';
+import 'package:price_online/features/feature_prices/data/models/price_model.dart';
 
 class PricesRepository {
   final PricesApiProvider apiProvider;
@@ -21,7 +16,7 @@ class PricesRepository {
       if (response.statusCode == 200) {
         var document = parse(response.data);
 
-        List<GoldModel> goldResults = [];
+        List<PriceModel> goldResults = [];
         List<String> goldImages = [
           'https://icons.veryicon.com/png/o/miscellaneous/a-set-of-color-icons-for-financial-management/gold-bullion-4.png',
         ];
@@ -55,7 +50,7 @@ class PricesRepository {
                       : 'unChanged';
 
           goldResults.add(
-            GoldModel(
+            PriceModel(
               imageUrl: imageUrl,
               title: title,
               timeUpdate: timeUpdate,
@@ -82,7 +77,7 @@ class PricesRepository {
       if (response.statusCode == 200) {
         var document = parse(response.data);
 
-        List<CoinModel> coinResults = [];
+        List<PriceModel> coinResults = [];
         List<String> coinImages = [
           'https://cutewallpaper.org/24/gold-coin-png/gold-coin-vector-png-600x600-png-download-pngkit.png',
         ];
@@ -113,7 +108,7 @@ class PricesRepository {
                       : 'unChanged';
 
           coinResults.add(
-            CoinModel(
+            PriceModel(
               imageUrl: imageUrl,
               title: title,
               timeUpdate: timeUpdate,
@@ -140,7 +135,7 @@ class PricesRepository {
       if (response.statusCode == 200) {
         var document = parse(response.data);
 
-        List<CurrencyModel> currencyResults = [];
+        List<PriceModel> currencyResults = [];
 
         var currencyElements = document.querySelectorAll('#azad .tr-price');
         var imagesElements =
@@ -172,7 +167,7 @@ class PricesRepository {
                       : 'unChanged';
 
           currencyResults.add(
-            CurrencyModel(
+            PriceModel(
               imageUrl: imageUrl,
               title: title,
               timeUpdate: timeUpdate,
@@ -199,7 +194,7 @@ class PricesRepository {
       if (response.statusCode == 200) {
         var document = parse(response.data);
 
-        List<CryptoModel> cryptoResults = [];
+        List<PriceModel> cryptoResults = [];
 
         var cryptoElements =
             document.querySelectorAll('.coingecko-table tbody tr');
@@ -207,12 +202,12 @@ class PricesRepository {
             document.querySelectorAll('.coingecko-table tbody tr td div img');
         var titleElements =
             document.querySelectorAll('.coingecko-table .coin-name .font-bold');
-        var symbolElements =
-            document.querySelectorAll('.coingecko-table .coin-name .font-bold');
+        var symbolElements = document
+            .querySelectorAll('.coingecko-table .coin-name .font-normal');
         var priceElements = document.querySelectorAll(
             '.coingecko-table .td-price [data-target="price.price"]');
         var percentElements = document.querySelectorAll(
-            '.coingecko-table .td-change24h [data-target="percent-change.percent"]');
+            '.coingecko-table .td-change24h [data-attr="price_change_percentage_24h"]');
 
         for (var i = 0; i < cryptoElements.length; i++) {
           String imageUrl = imagesElements[i].attributes['src'].toString();
@@ -242,7 +237,7 @@ class PricesRepository {
               : '${DateTime.now().second}';
 
           cryptoResults.add(
-            CryptoModel(
+            PriceModel(
               imageUrl: imageUrl,
               title: title,
               symbol: symbol,
@@ -270,7 +265,7 @@ class PricesRepository {
       if (response.statusCode == 200) {
         var document = parse(response.data);
 
-        List<EnergyModel> energyResults = [];
+        List<PriceModel> energyResults = [];
         List<String> energyImages = [
           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQG9c9duYAEbne2pwI9JeZ9NHfl9n9NGVvGGaAC7RhKwzDrejs-',
           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQG9c9duYAEbne2pwI9JeZ9NHfl9n9NGVvGGaAC7RhKwzDrejs-',
@@ -311,7 +306,7 @@ class PricesRepository {
                       : 'unChanged';
 
           energyResults.add(
-            EnergyModel(
+            PriceModel(
               imageUrl: imageUrl,
               title: title,
               timeUpdate: timeUpdate,
@@ -338,7 +333,7 @@ class PricesRepository {
       if (response.statusCode == 200) {
         var document = parse(response.data);
 
-        List<MetalModel> energyResults = [];
+        List<PriceModel> energyResults = [];
         List<String> energyImages = [
           'https://freesvg.org/img/Farmeral-metal-icon.png',
         ];
@@ -373,7 +368,7 @@ class PricesRepository {
                       : 'unChanged';
 
           energyResults.add(
-            MetalModel(
+            PriceModel(
               imageUrl: imageUrl,
               title: title,
               timeUpdate: timeUpdate,

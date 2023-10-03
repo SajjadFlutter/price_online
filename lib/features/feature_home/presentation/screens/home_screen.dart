@@ -140,9 +140,9 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               title: Text('پشتیبانی (تلگرام)', style: textTheme.labelMedium),
               onTap: () async {
-                final Uri url =
-                    Uri.parse('https://t.me/gheymat_online_support');
-                if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+                final Uri url = Uri.parse('https://t.me/application_support_1');
+                if (!await launchUrl(url,
+                    mode: LaunchMode.externalApplication)) {
                   throw 'Could not launch $url';
                 }
               },
@@ -156,8 +156,9 @@ class _HomeScreenState extends State<HomeScreen> {
               title: Text('پشتیبانی (ایتا)', style: textTheme.labelMedium),
               onTap: () async {
                 final Uri url =
-                    Uri.parse('https://eitaa.com/gheymat_online_support');
-                if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+                    Uri.parse('https://eitaa.com/application_support_1');
+                if (!await launchUrl(url,
+                    mode: LaunchMode.externalApplication)) {
                   throw 'Could not launch $url';
                 }
               },
@@ -171,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
               title:
                   Text('ارسال برنامه به دوستان', style: textTheme.labelMedium),
               onTap: () {
-                Share.share('package="com.example.price_online');
+                Share.share('https://myket.ir/app/com.example.price_online');
               },
             ),
             //
@@ -313,6 +314,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(right: 5.0),
@@ -323,7 +325,20 @@ class _HomeScreenState extends State<HomeScreen> {
                       Padding(
                         padding: const EdgeInsets.only(left: 5.0),
                         child: Text(
-                          ' ( ${(DateTime.now().weekday == 6 ? 'شنبه ' : DateTime.now().weekday == 7 ? 'یکشنبه ' : DateTime.now().weekday == 1 ? 'دوشنبه ' : DateTime.now().weekday == 2 ? 'سه شنبه ' : DateTime.now().weekday == 3 ? 'چهارشبنه ' : DateTime.now().weekday == 4 ? 'پنجشنبه ' : 'جمعه ') + DateTime.now().toPersianDateStr()} )',
+                          (DateTime.now().weekday == 6
+                                  ? 'شنبه '
+                                  : DateTime.now().weekday == 7
+                                      ? 'یکشنبه '
+                                      : DateTime.now().weekday == 1
+                                          ? 'دوشنبه '
+                                          : DateTime.now().weekday == 2
+                                              ? 'سه شنبه '
+                                              : DateTime.now().weekday == 3
+                                                  ? 'چهارشبنه '
+                                                  : DateTime.now().weekday == 4
+                                                      ? 'پنجشنبه '
+                                                      : 'جمعه ') +
+                              DateTime.now().toPersianDateStr(),
                           style: textTheme.labelMedium,
                         ),
                       ),

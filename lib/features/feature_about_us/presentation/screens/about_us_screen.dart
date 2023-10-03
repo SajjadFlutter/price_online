@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// import 'package:syncfusion_flutter_charts/charts.dart';
 
 class AboutUsScreen extends StatelessWidget {
   const AboutUsScreen({super.key});
@@ -11,6 +12,16 @@ class AboutUsScreen extends StatelessWidget {
     var secondaryHeaderColor = Theme.of(context).secondaryHeaderColor;
     var cardColor = Theme.of(context).cardColor;
     var shadowColor = Theme.of(context).shadowColor;
+
+    // List<GoldData> data = [
+    //   GoldData('06/28', 23450000),
+    //   GoldData('06/29', 23250000),
+    //   GoldData('06/30', 23150000),
+    //   GoldData('06/31', 23550000),
+    //   GoldData('07/01', 23650000),
+    //   GoldData('07/02', 23250000),
+    //   GoldData('07/03', 23350000),
+    // ];
 
     return Scaffold(
       body: SafeArea(
@@ -65,7 +76,7 @@ class AboutUsScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              child:  Column(
+              child: Column(
                 children: [
                   const Text(
                     textAlign: TextAlign.justify,
@@ -75,7 +86,7 @@ class AboutUsScreen extends StatelessWidget {
                   const SizedBox(height: 20.0),
                   Row(
                     children: [
-                      Text('سلب مسئلیت',style: textTheme.titleMedium),
+                      Text('سلب مسئلیت', style: textTheme.titleMedium),
                     ],
                   ),
                   const SizedBox(height: 10.0),
@@ -87,9 +98,110 @@ class AboutUsScreen extends StatelessWidget {
                 ],
               ),
             ),
+            const SizedBox(height: 30.0),
+            // chart
+            // SizedBox(
+            //   width: 450.0,
+            //   height: 400.0,
+            //   child: LineChart(
+            //     LineChartData(
+            //       maxX: 8.0,
+            //       maxY: 8.0,
+            //       minX: 0.0,
+            //       minY: 0.0,
+            //       baselineX: 8,
+            //       baselineY: 8,
+            //       lineTouchData: LineTouchData(touchTooltipData: ),
+            //       titlesData: FlTitlesData(
+            //         topTitles: const AxisTitles(
+            //           sideTitles: SideTitles(
+            //             showTitles: false,
+            //           ),
+            //         ),
+            //         rightTitles: const AxisTitles(
+            //           sideTitles: SideTitles(
+            //             showTitles: false,
+            //           ),
+            //         ),
+            //         leftTitles: const AxisTitles(
+            //           sideTitles: SideTitles(
+            //             showTitles: false,
+            //           ),
+            //         ),
+            //         bottomTitles: AxisTitles(
+            //           sideTitles: SideTitles(
+            //             interval: 1,
+            //             showTitles: true,
+            //             getTitlesWidget: (value, meta) {
+            //               switch (value) {
+            //                 case 1:
+            //                   return Text('شنبه');
+            //                 case 2:
+            //                   return Text('یکشنبه');
+            //                 case 3:
+            //                   return Text('دوشنبه');
+            //                 case 4:
+            //                   return Text('سه شنبه');
+            //                 case 5:
+            //                   return Text('چهارشنبه');
+            //                 case 6:
+            //                   return Text('پنجشنبه');
+            //                 case 7:
+            //                   return Text('جمعه');
+            //                 default:
+            //                   return Text('');
+            //               }
+            //             },
+            //           ),
+            //         ),
+            //       ),
+            //       lineBarsData: [
+            //         LineChartBarData(
+            //           spots: [
+            //             const FlSpot(0, 0),
+            //             const FlSpot(2, 6),
+            //             const FlSpot(4, 5),
+            //             const FlSpot(6, 4),
+            //             const FlSpot(7, 5),
+            //           ],
+            //           isCurved: true,
+            //           color: Colors.amber,
+            //         ),
+            //         // LineChartBarData(),
+            //       ],
+            //     ),
+            //     duration: const Duration(milliseconds: 150), // Optional
+            //     curve: Curves.linear, // Optional
+            //   ),
+            // ),
+            // SfCartesianChart(
+            //   primaryXAxis: CategoryAxis(),
+            //   title: ChartTitle(text: 'نمودار طلای 18 عیار'),
+            //   legend: const Legend(isVisible: true),
+            //   tooltipBehavior: TooltipBehavior(enable: true),
+            //   enableMultiSelection: false,
+            //   series: <ChartSeries>[
+            //     LineSeries<GoldData, String>(
+            //       dataSource: data,
+            //       xValueMapper: (GoldData goldData, _) => goldData.dateDay,
+            //       yValueMapper: (GoldData goldData, _) => goldData.price,
+            //       enableTooltip: false,
+            //       isVisibleInLegend: false,
+            //       dataLabelSettings: DataLabelSettings(isVisible: true,textStyle: textTheme.labelMedium),
+            //       color: Colors.amber,
+            //     )
+            //   ],
+            // ),
           ],
         ),
       ),
     );
   }
+}
+
+class GoldData {
+  final String dateDay;
+  final double price;
+
+  GoldData(this.dateDay, this.price);
 }
