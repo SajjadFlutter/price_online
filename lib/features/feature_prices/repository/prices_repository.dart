@@ -192,36 +192,28 @@ class PricesRepository {
     try {
       Response response = await apiProvider.callCryptoData();
       if (response.statusCode == 200) {
-        var document = parse(response.data);
+        var data = response.data['data'];
 
         List<PriceModel> cryptoResults = [];
 
-        var cryptoElements =
-            document.querySelectorAll('.coingecko-table tbody tr');
-        var imagesElements =
-            document.querySelectorAll('.coingecko-table tbody tr td div img');
-        var titleElements =
-            document.querySelectorAll('.coingecko-table .coin-name .font-bold');
-        var symbolElements = document
-            .querySelectorAll('.coingecko-table .coin-name .font-normal');
-        var priceElements = document.querySelectorAll(
-            '.coingecko-table .td-price [data-target="price.price"]');
-        var percentElements = document.querySelectorAll(
-            '.coingecko-table .td-change24h [data-attr="price_change_percentage_24h"]');
+        var cryptoList = data['cryptoCurrencyList'];
 
-        for (var i = 0; i < cryptoElements.length; i++) {
-          String imageUrl = imagesElements[i].attributes['src'].toString();
-
-          String title = titleElements[i].text.trim();
-          String symbol = symbolElements[i].text.trim();
-          String price = priceElements[i].text.trim();
-
-          String percent = percentElements[i].text.trim();
-
-          String percentChange = percentElements[i].text.trim().contains('-')
+        for (var i = 0; i < cryptoList.length; i++) {
+          String imageUrl =
+              'https://s2.coinmarketcap.com/static/img/coins/64x64/${cryptoList[i]['id']}.png';
+          String title = cryptoList[i]['name'];
+          String symbol = cryptoList[i]['symbol'];
+          String price = cryptoList[i]['quotes'][0]['price'].toString();
+          String percent =
+              cryptoList[i]['quotes'][0]['percentChange24h'].toString();
+          String percentChange = cryptoList[i]['quotes'][0]['percentChange24h']
+                  .toString()
+                  .contains('-')
               ? 'low'
-              : percentElements[i].text.trim().contains('-') == false &&
-                      double.parse(percentElements[i].text.substring(0, 3)) > 0
+              : cryptoList[i]['quotes'][0]['percentChange24h']
+                          .toString()
+                          .contains('-') ==
+                      false
                   ? 'high'
                   : 'unChanged';
 

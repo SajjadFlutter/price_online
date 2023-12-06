@@ -241,9 +241,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       // title appbar
                       Text('قیمت آنلاین', style: textTheme.titleLarge),
-                      const SizedBox(
-                        width: 45.0,
-                      ),
+                      const SizedBox(width: 45.0),
                     ],
                   ),
                 ],

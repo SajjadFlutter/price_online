@@ -133,8 +133,8 @@ class PriceItem extends StatelessWidget {
                       borderRadius: BorderRadius.circular(30.0),
                       child: CachedNetworkImage(
                         fadeInDuration: const Duration(milliseconds: 500),
-                        width: 30.0,
-                        height: 30.0,
+                        width: 35.0,
+                        height: 35.0,
                         imageUrl: priceModels[index].imageUrl,
                         fit: BoxFit.cover,
                         placeholder: (context, url) => Padding(
@@ -202,8 +202,8 @@ class PriceItem extends StatelessWidget {
                         children: [
                           Text(
                             PricesScreen.categoryTitle == 'ارز دیجیتال'
-                                ? priceModels[index].price.length > 10
-                                    ? '${priceModels[index].price.substring(0, 10)}'
+                                ? priceModels[index].price.length > 8
+                                    ? '${priceModels[index].price.substring(0, 8)}'
                                         .toPersianDigit()
                                     : '${priceModels[index].price.substring(1)}'
                                         .toPersianDigit()
@@ -237,12 +237,12 @@ class PriceItem extends StatelessWidget {
                             child: Text(
                               priceModels[index].percentChange == 'low'
                                   ? PricesScreen.categoryTitle == 'ارز دیجیتال'
-                                      ? '${'${priceModels[index].percent.substring(1)}'.toPersianDigit()} -'
+                                      ? '${'${priceModels[index].percent.substring(1, 5)}'.toPersianDigit()} -'
                                       : '- ${'${priceModels[index].percent.substring(0)}'.toPersianDigit()}%'
                                   : priceModels[index].percentChange == 'high'
                                       ? PricesScreen.categoryTitle ==
                                               'ارز دیجیتال'
-                                          ? '${'${priceModels[index].percent}'.toPersianDigit()} +'
+                                          ? '${'${priceModels[index].percent.substring(0, 4)}'.toPersianDigit()} +'
                                           : '+ ${'${priceModels[index].percent}'.toPersianDigit()}%'
                                       : '${priceModels[index].percent}'
                                           .toPersianDigit(),
