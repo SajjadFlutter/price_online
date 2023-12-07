@@ -1,5 +1,3 @@
-// ignore_for_file: unused_element, use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -126,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     'assets/images/app_icon.svg',
                     width: 120.0,
                   ),
-                  const Text('نسخه : 1.0.0'),
+                  Text('نسخه : 1.0.3'.toPersianDigit(),style: textTheme.labelMedium),
                 ],
               ),
             ),

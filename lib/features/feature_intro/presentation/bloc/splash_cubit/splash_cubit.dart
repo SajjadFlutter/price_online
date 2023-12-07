@@ -1,6 +1,5 @@
-import 'package:bloc/bloc.dart';
-// ignore: depend_on_referenced_packages
-import 'package:meta/meta.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:price_online/features/feature_intro/repository/splash_repository.dart';
 
 part 'splash_state.dart';
