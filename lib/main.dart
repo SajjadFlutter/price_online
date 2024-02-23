@@ -19,6 +19,9 @@ void main() async {
   // init locator
   await initLocator();
 
+  // disable screen rotation
+  setOrientations();
+
   runApp(
     MultiBlocProvider(
       providers: [
@@ -86,4 +89,11 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+}
+
+void setOrientations() {
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 }
