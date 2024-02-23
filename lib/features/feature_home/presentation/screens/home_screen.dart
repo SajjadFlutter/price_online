@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 import 'package:price_online/common/bloc/change_bool/change_bool_cubit.dart';
-import 'package:price_online/features/feature_about_us/presentation/screens/about_us_screen.dart';
+import 'package:price_online/features/feature_home/presentation/screens/about_us_screen.dart';
 import 'package:price_online/features/feature_home/presentation/bloc/theme_cubit/theme_cubit.dart';
 import 'package:price_online/features/feature_home/presentation/widgets/category_widget.dart';
 import 'package:price_online/locator.dart';
@@ -12,6 +12,8 @@ import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'source_rates_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -124,7 +126,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     'assets/images/app_icon.svg',
                     width: 120.0,
                   ),
-                  Text('نسخه : 1.0.3'.toPersianDigit(),style: textTheme.labelMedium),
+                  Text('نسخه : 1.0.3'.toPersianDigit(),
+                      style: textTheme.labelMedium),
                 ],
               ),
             ),
@@ -208,6 +211,21 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
               ),
+            ),
+            //
+            const Divider(thickness: 1.5, height: 30.0),
+            // Source rate
+            ListTile(
+              leading: Icon(
+                Icons.info_rounded,
+                color: secondaryHeaderColor,
+              ),
+              title: Text('منبع نرخ ها', style: textTheme.labelMedium),
+              onTap: () {
+                var route = MaterialPageRoute(
+                    builder: (context) => const SourceRatesScreen());
+                Navigator.push(context, route);
+              },
             ),
           ],
         ),

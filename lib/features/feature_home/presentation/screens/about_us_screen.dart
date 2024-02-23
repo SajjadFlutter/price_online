@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:syncfusion_flutter_charts/charts.dart';
 
 class AboutUsScreen extends StatelessWidget {
   const AboutUsScreen({super.key});
@@ -12,16 +11,6 @@ class AboutUsScreen extends StatelessWidget {
     var secondaryHeaderColor = Theme.of(context).secondaryHeaderColor;
     var cardColor = Theme.of(context).cardColor;
     var shadowColor = Theme.of(context).shadowColor;
-
-    // List<GoldData> data = [
-    //   GoldData('06/28', 23450000),
-    //   GoldData('06/29', 23250000),
-    //   GoldData('06/30', 23150000),
-    //   GoldData('06/31', 23550000),
-    //   GoldData('07/01', 23650000),
-    //   GoldData('07/02', 23250000),
-    //   GoldData('07/03', 23350000),
-    // ];
 
     return Scaffold(
       body: SafeArea(
@@ -86,7 +75,7 @@ class AboutUsScreen extends StatelessWidget {
                   const SizedBox(height: 20.0),
                   Row(
                     children: [
-                      Text('سلب مسئلیت', style: textTheme.titleMedium),
+                      Text('سلب مسئولیت', style: textTheme.titleMedium),
                     ],
                   ),
                   const SizedBox(height: 10.0),
