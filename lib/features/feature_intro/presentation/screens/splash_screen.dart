@@ -1,14 +1,13 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:price_online/common/widgets/small_btn.dart';
-import 'package:price_online/features/feature_home/presentation/screens/home_screen.dart';
-import 'package:price_online/features/feature_intro/presentation/bloc/splash_cubit/splash_cubit.dart';
-import 'package:price_online/locator.dart';
-import 'package:price_online/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../../common/widgets/small_btn.dart';
+import '../../../../locator.dart';
+import '../../../../main.dart';
+import '../../../feature_home/presentation/screens/home_screen.dart';
+import '../bloc/splash_cubit/splash_cubit.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -67,7 +66,7 @@ class _SplashScreenState extends State<SplashScreen> {
               children: [
                 SvgPicture.asset(
                   'assets/images/app_icon.svg',
-                  width: 130.0,
+                  width: 135.0,
                 ),
                 const SizedBox(height: 15.0),
                 Row(

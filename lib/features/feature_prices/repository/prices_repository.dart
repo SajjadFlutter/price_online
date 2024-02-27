@@ -79,7 +79,7 @@ class PricesRepository {
 
         List<PriceModel> coinResults = [];
         List<String> coinImages = [
-          'https://cutewallpaper.org/24/gold-coin-png/gold-coin-vector-png-600x600-png-download-pngkit.png',
+          'https://www.pngkit.com/png/full/107-1072439_gold-coin-vector-png.png',
         ];
 
         var coinElements = document.querySelectorAll('#coin .tr-price');

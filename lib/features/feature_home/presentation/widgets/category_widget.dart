@@ -40,7 +40,7 @@ class CategoryWidget extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: shadowColor,
-              blurRadius: 10.0,
+              blurRadius: 8.0,
             ),
           ],
         ),

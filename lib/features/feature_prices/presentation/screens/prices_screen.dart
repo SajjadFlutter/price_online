@@ -11,6 +11,8 @@ import 'package:price_online/locator.dart';
 import 'package:price_online/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../common/widgets/adivery_widget.dart';
+
 class PricesScreen extends StatefulWidget {
   const PricesScreen({super.key});
 
@@ -127,139 +129,172 @@ class _PricesScreenState extends State<PricesScreen> {
 
     return Scaffold(
       body: SafeArea(
-        child: Builder(builder: (context) {
-          // call api
-          callApiForPrices();
+        child: Stack(
+          children: [
+            PricesLayer(
+              secondaryHeaderColor: secondaryHeaderColor,
+              textTheme: textTheme,
+              cardColor: cardColor,
+              primaryColor: primaryColor,
+              callApiForPrices: callApiForPrices,
+            ),
+            const AdiveryWidget(),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
-          return Column(
-            children: [
-              // appbar
-              Container(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Column(
+class PricesLayer extends StatelessWidget {
+  const PricesLayer({
+    super.key,
+    required this.secondaryHeaderColor,
+    required this.textTheme,
+    required this.cardColor,
+    required this.primaryColor,
+    required this.callApiForPrices,
+  });
+
+  final Color secondaryHeaderColor;
+  final TextTheme textTheme;
+  final Color cardColor;
+  final Color primaryColor;
+  final Function callApiForPrices;
+
+  @override
+  Widget build(BuildContext context) {
+    return Builder(builder: (context) {
+      // call api
+      callApiForPrices();
+
+      return Column(
+        children: [
+          // appbar
+          Container(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Column(
+              children: [
+                Row(
                   children: [
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Icon(
-                              Icons.arrow_back_rounded,
-                              color: secondaryHeaderColor,
-                            ),
-                          ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Icon(
+                          Icons.arrow_back_rounded,
+                          color: secondaryHeaderColor,
                         ),
-                        // title appbar
-                        Text(
-                          'قیمت ${PricesScreen.categoryTitle}',
-                          style: textTheme.titleMedium,
-                        ),
-                        const SizedBox(
-                          width: 48.0,
-                        ),
-                      ],
+                      ),
+                    ),
+                    // title appbar
+                    Text(
+                      'قیمت ${PricesScreen.categoryTitle}',
+                      style: textTheme.titleMedium,
+                    ),
+                    const SizedBox(
+                      width: 48.0,
                     ),
                   ],
                 ),
-              ),
-              //
-              const SizedBox(height: 5.0),
-              // Prices list
-              BlocBuilder<PricesCubit, PricesState>(
-                buildWhen: (previous, current) {
-                  if (previous.pricesDataStatus == current.pricesDataStatus) {
-                    return false;
-                  }
-                  return true;
-                },
-                builder: (context, state) {
-                  // Loading
-                  if (state.pricesDataStatus is PricesDataLoading) {
-                    return RefreshProgressIndicator(
-                      color: Colors.grey.shade800,
-                    );
-                  }
-                  // Completed
-                  if (state.pricesDataStatus is PricesDataCompleted) {
-                    PricesDataCompleted pricesDataCompleted =
-                        state.pricesDataStatus as PricesDataCompleted;
-                    // models
-                    List priceModels = pricesDataCompleted.modelResults;
+              ],
+            ),
+          ),
+          //
+          const SizedBox(height: 5.0),
+          // Prices list
+          BlocBuilder<PricesCubit, PricesState>(
+            buildWhen: (previous, current) {
+              if (previous.pricesDataStatus == current.pricesDataStatus) {
+                return false;
+              }
+              return true;
+            },
+            builder: (context, state) {
+              // Loading
+              if (state.pricesDataStatus is PricesDataLoading) {
+                return Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: RefreshProgressIndicator(
+                    color: Colors.grey.shade800,
+                  ),
+                );
+              }
+              // Completed
+              if (state.pricesDataStatus is PricesDataCompleted) {
+                PricesDataCompleted pricesDataCompleted =
+                    state.pricesDataStatus as PricesDataCompleted;
+                // models
+                List priceModels = pricesDataCompleted.modelResults;
 
-                    return Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: RefreshIndicator(
-                          color: Colors.grey.shade800,
-                          child: ListView.builder(
-                            physics: const BouncingScrollPhysics(),
-                            itemCount: priceModels.length,
-                            itemBuilder: (context, index) {
-                              // percentIcon
-                              var percentIcon =
-                                  DecimalRounder.setPercentChangesIcon(
-                                      priceModels[index].percentChange);
+                return Expanded(
+                  child: RefreshIndicator(
+                    color: Colors.grey.shade800,
+                    child: ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: priceModels.length,
+                      itemBuilder: (context, index) {
+                        // percentIcon
+                        var percentIcon =
+                            DecimalRounder.setPercentChangesIcon(
+                                priceModels[index].percentChange);
 
-                              return PriceItem(
-                                index: index,
-                                priceModels: priceModels,
-                                cardColor: cardColor,
-                                labelTitle: PricesScreen.categoryTitle,
-                                primaryColor: primaryColor,
-                                textTheme: textTheme,
-                                percentIcon: percentIcon,
-                              );
-                            },
-                          ),
-                          onRefresh: () async {
-                            await Future.delayed(
-                              const Duration(seconds: 1),
-                            );
+                        return PriceItem(
+                          index: index,
+                          priceModels: priceModels,
+                          cardColor: cardColor,
+                          labelTitle: PricesScreen.categoryTitle,
+                          primaryColor: primaryColor,
+                          textTheme: textTheme,
+                          percentIcon: percentIcon,
+                        );
+                      },
+                    ),
+                    onRefresh: () async {
+                      await Future.delayed(
+                        const Duration(seconds: 1),
+                      );
 
-                            switch (PricesScreen.categoryTitle) {
-                              case 'طلا':
-                                BlocProvider.of<PricesCubit>(context)
-                                    .refreshGoldDataEvent();
-                                break;
-                              case 'سکه':
-                                BlocProvider.of<PricesCubit>(context)
-                                    .refreshCoinDataEvent();
-                                break;
-                              case 'ارز مرجع':
-                                BlocProvider.of<PricesCubit>(context)
-                                    .refreshCurrencyDataEvent();
-                                break;
-                              case 'ارز دیجیتال':
-                                BlocProvider.of<PricesCubit>(context)
-                                    .refreshCryptoDataEvent();
-                                break;
-                              case 'نفت و انرژی':
-                                BlocProvider.of<PricesCubit>(context)
-                                    .refreshEnergyDataEvent();
-                                break;
-                              default:
-                            }
-                          },
-                        ),
-                      ),
-                    );
-                  }
-                  // Error
-                  if (state.pricesDataStatus is PricesDataCompleted) {
-                    return const Text('Error');
-                  }
+                      switch (PricesScreen.categoryTitle) {
+                        case 'طلا':
+                          BlocProvider.of<PricesCubit>(context)
+                              .refreshGoldDataEvent();
+                          break;
+                        case 'سکه':
+                          BlocProvider.of<PricesCubit>(context)
+                              .refreshCoinDataEvent();
+                          break;
+                        case 'ارز مرجع':
+                          BlocProvider.of<PricesCubit>(context)
+                              .refreshCurrencyDataEvent();
+                          break;
+                        case 'ارز دیجیتال':
+                          BlocProvider.of<PricesCubit>(context)
+                              .refreshCryptoDataEvent();
+                          break;
+                        case 'نفت و انرژی':
+                          BlocProvider.of<PricesCubit>(context)
+                              .refreshEnergyDataEvent();
+                          break;
+                        default:
+                      }
+                    },
+                  ),
+                );
+              }
+              // Error
+              if (state.pricesDataStatus is PricesDataCompleted) {
+                return const Text('Error');
+              }
 
-                  return Container();
-                },
-              ),
-            ],
-          );
-        }),
-      ),
-    );
+              return Container();
+            },
+          ),
+        ],
+      );
+    });
   }
 }

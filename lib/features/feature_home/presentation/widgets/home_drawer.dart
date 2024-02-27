@@ -40,7 +40,7 @@ class HomeDrawer extends StatelessWidget {
                   'assets/images/app_icon.svg',
                   width: 120.0,
                 ),
-                Text('نسخه : 1.0.3'.toPersianDigit(),
+                Text('نسخه : 1.0.4'.toPersianDigit(),
                     style: textTheme.labelMedium),
               ],
             ),

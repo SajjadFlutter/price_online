@@ -38,7 +38,9 @@ class PriceItem extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(
         top: index == 0 ? 5.0 : 4.0,
-        bottom: index == (priceModels.length - 1) ? 15.0 : 4.0,
+        bottom: index == (priceModels.length - 1) ? 120.0 : 4.0,
+        left: 10.0,
+        right: 10.0,
       ),
       height: 75.0,
       decoration: BoxDecoration(
@@ -47,7 +49,7 @@ class PriceItem extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: shadowColor,
-            blurRadius: 10.0,
+            blurRadius: 8.0,
           ),
         ],
       ),

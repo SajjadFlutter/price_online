@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../common/widgets/adivery_widget.dart';
 import '../widgets/home_appbar.dart';
 import '../widgets/home_categories.dart';
 import '../widgets/home_drawer.dart';
@@ -113,122 +114,170 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       // body
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
-            // appbar
-            HomeAppBar(
+            HomeLayer(
               secondaryHeaderColor: secondaryHeaderColor,
               textTheme: textTheme,
-            ),
-            // sliders
-            SizedBox(
               width: width,
-              height: 150,
-              child: Stack(
-                children: [
-                  PageView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: sliderImages.length,
-                    controller: pageViewController,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () async {
-                          final Uri url = Uri.parse(
-                              'https://bitpin.ir/signup/?ref=Ohk73uWx');
-                          if (!await launchUrl(url)) {
-                            throw 'Could not launch $url';
-                          }
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 15.0),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20.0),
-                            child: Image(
-                              image: AssetImage(sliderImages[index]),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  // page indicator
-                  if (sliderImages.length > 1)
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 12.0),
-                        child: SmoothPageIndicator(
-                          controller: pageViewController,
-                          count: sliderImages.length,
-                          effect: ExpandingDotsEffect(
-                            dotHeight: 8.0,
-                            dotWidth: 8.0,
-                            activeDotColor: primaryColor,
-                            dotColor: Colors.grey,
-                            spacing: 5.0,
-                          ),
-                        ),
-                      ),
-                    )
-                  else
-                    Container(),
-                ],
-              ),
-            ),
-            //
-            const SizedBox(height: 25.0),
-            // categories
-            HomeCategories(
-              textTheme: textTheme,
-              width: width,
+              sliderImages: sliderImages,
+              pageViewController: pageViewController,
+              primaryColor: primaryColor,
               categoryImages: categoryImages,
               categoryTitles: categoryTitles,
               cardColor: cardColor,
-              primaryColor: primaryColor,
+              shadowColor: shadowColor,
             ),
-            //
-            // const SizedBox(height: 20.0),
-            // About us
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AboutUsScreen(),
-                  ),
-                );
-              },
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 15.0),
-                height: 70.0,
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                decoration: BoxDecoration(
-                    color: cardColor,
-                    borderRadius: BorderRadius.circular(20.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: shadowColor,
-                        blurRadius: 10.0,
-                      ),
-                    ]),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const SizedBox(width: 15.0),
-                    Text('درباره ما', style: textTheme.titleMedium),
-                    Icon(
-                      Icons.arrow_back_ios_new_rounded,
-                      size: 18.0,
-                      color: secondaryHeaderColor,
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            const AdiveryWidget()
           ],
         ),
       ),
+    );
+  }
+}
+
+class HomeLayer extends StatelessWidget {
+  const HomeLayer({
+    super.key,
+    required this.secondaryHeaderColor,
+    required this.textTheme,
+    required this.width,
+    required this.sliderImages,
+    required this.pageViewController,
+    required this.primaryColor,
+    required this.categoryImages,
+    required this.categoryTitles,
+    required this.cardColor,
+    required this.shadowColor,
+  });
+
+  final Color secondaryHeaderColor;
+  final TextTheme textTheme;
+  final double width;
+  final List<String> sliderImages;
+  final PageController pageViewController;
+  final Color primaryColor;
+  final List<String> categoryImages;
+  final List<String> categoryTitles;
+  final Color cardColor;
+  final Color shadowColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        // appbar
+        HomeAppBar(
+          secondaryHeaderColor: secondaryHeaderColor,
+          textTheme: textTheme,
+        ),
+        // sliders
+        SizedBox(
+          width: width,
+          height: 150,
+          child: Stack(
+            children: [
+              PageView.builder(
+                physics: const BouncingScrollPhysics(),
+                itemCount: sliderImages.length,
+                controller: pageViewController,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () async {
+                      final Uri url =
+                          Uri.parse('https://bitpin.ir/signup/?ref=Ohk73uWx');
+                      if (!await launchUrl(url)) {
+                        throw 'Could not launch $url';
+                      }
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 15.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20.0),
+                        child: Image(
+                          image: AssetImage(sliderImages[index]),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              // page indicator
+              if (sliderImages.length > 1)
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 12.0),
+                    child: SmoothPageIndicator(
+                      controller: pageViewController,
+                      count: sliderImages.length,
+                      effect: ExpandingDotsEffect(
+                        dotHeight: 8.0,
+                        dotWidth: 8.0,
+                        activeDotColor: primaryColor,
+                        dotColor: Colors.grey,
+                        spacing: 5.0,
+                      ),
+                    ),
+                  ),
+                )
+              else
+                Container(),
+            ],
+          ),
+        ),
+        //
+        const SizedBox(height: 25.0),
+        // categories
+        HomeCategories(
+          textTheme: textTheme,
+          width: width,
+          categoryImages: categoryImages,
+          categoryTitles: categoryTitles,
+          cardColor: cardColor,
+          primaryColor: primaryColor,
+        ),
+        //
+        // const SizedBox(height: 20.0),
+        // About us
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AboutUsScreen(),
+              ),
+            );
+          },
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 15.0),
+            height: 70.0,
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            decoration: BoxDecoration(
+                color: cardColor,
+                borderRadius: BorderRadius.circular(20.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: shadowColor,
+                    blurRadius: 8.0,
+                  ),
+                ]),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(width: 15.0),
+                Text('درباره ما', style: textTheme.titleMedium),
+                Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  size: 18.0,
+                  color: secondaryHeaderColor,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
